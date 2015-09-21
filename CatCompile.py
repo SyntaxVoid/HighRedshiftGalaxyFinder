@@ -3,7 +3,7 @@ import functions
 
 
 if __name__ == '__main__':
-
+    print("If you get a \"sextractor not found\" error, then the program will automatically try using the \"sex\" command instead.")
     #f125w
     os.system("sextractor -c SExtractorConfig/f125w.sex FullMaps/gs_f125w_cropcal.fits -DETECT_THRESH {} -ANALYSIS_THRESH {}".format(35.0,35.0)+\
               "|| sex -c SExtractorConfig/f125w.sex FullMaps/gs_f125w_cropcal.fits -DETECT_THRESH {} -ANALYSIS_THRESH {}".format(35.0,35.0))
