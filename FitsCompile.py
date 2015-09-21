@@ -15,7 +15,7 @@ if __name__ == '__main__':
 # m^2    sr   10^9 nW   4.25*10^10 arcsec^2        (1 pixel)^2        f    10^-26 W.m^-2.Hz^-1
 #
 #                       1
-# = 4.606876 * 10^22 x --- Jy
+# = 4.6117.64076   x   --- Jy
 #                       f
 
     f1 = 'HalfMaps/gs_f125w_half1_cropcal.fits'
