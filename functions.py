@@ -14,13 +14,14 @@ def fits_add(file_paths, destination, header_index = 0, conversion_factor = 1.0)
     # Adds a list of fits files together, uses the header of file_paths[header_index]
     # and multiplies by the conversion factor if you are converting units
     check_paths(file_paths)
-    HDUList   = [pyfits.open(f) for f in file_paths]
-    data_list = [HDU[0].data for HDU in HDUList]
-    header_list = [HDU[0].header for HDU in HDUList]
-    for HDU in HDUList:
+    d_list = [ ]
+    for f in file_paths:
+        HDU = pyfits.open(f)
+        d_list.append(HDU[0].data)
+        h = HDU[0].header
         HDU.close()
-    data_sum  = sum(data_list) * conversion_factor / len(file_paths)
-    pyfits.writeto(destination, data_sum, header = header_list[header_index], clobber = 1)
+    data_sum = sum(d_list) * conversion_factor / len(file_paths)
+    pyfits.writeto(destination, data_sum, header = h, clobber = 1)
     return
 
 

@@ -6,16 +6,17 @@ import os
 
 
 if __name__ == '__main__':
-    CONVERSION = 4.611764706 * pow(10,10)
-# To convert nW . m^-2 . sr^-1 to uJy
+    CONVERSION = 46117.64706
+    C = 3 * pow(10,10) #speed of light m/s
+# To convert nW . m^-2 . sr^-1 to Jy
 #
-#  nW    1      1 W             1 sr             (0.14 arcsec)^2      1         1 Jy              10^6 uJy
-# --- x --- x ------- x -------------------  x  ------------------ x --- x ------------------- x ---------
-# m^2    sr   10^9 nW   4.25*10^10 arcsec^2        (1 pixel)^2        f    10^-26 W.m^-2.Hz^-1     1 Jy
+#  nW    1      1 W             1 sr             (0.14 arcsec)^2      1         1 Jy
+# --- x --- x ------- x -------------------  x  ------------------ x --- x -------------------
+# m^2    sr   10^9 nW   4.25*10^10 arcsec^2        (1 pixel)^2        f    10^-26 W.m^-2.Hz^-1
 #
-#                          1
-# = 4.611764706 * 10^10 x --- uJy
-#                          f
+#                       1
+# = 4.606876 * 10^22 x --- Jy
+#                       f
 
     f1 = 'HalfMaps/gs_f125w_half1_cropcal.fits'
     f2 = 'HalfMaps/gs_f125w_half2_cropcal.fits'
@@ -30,11 +31,11 @@ if __name__ == '__main__':
 
     # Central wavelengths were found from http://www.stsci.edu/hst/wfc3/documents/ISRs/2003/WFC3-2003-07.pdf
     # and http://etc.stsci.edu/etcstatic/users_guide/appendix_b_acs.html
-    center_f125w = 12449.36
-    center_f160w = 15405.16
-    center_f606w =  5917.7
-    center_f775w =  7693.0
-    center_f850l =  9145.2
+    center_f125w = C/12449.36
+    center_f160w = C/15405.16
+    center_f606w = C/5917.7
+    center_f775w = C/7693.0
+    center_f850l = C/9145.2
 
     print("---f125w---")
     functions.fits_add([f1,f2], 'FullMaps/gs_f125w_cropcal.fits', header_index = 1, conversion_factor = CONVERSION/center_f125w)
