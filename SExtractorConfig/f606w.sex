@@ -4,7 +4,7 @@
  
 #-------------------------------- Catalog ------------------------------------
  
-CATALOG_NAME     Cataloges/gs_f606w_cropcal.cat       # name of the output catalog
+CATALOG_NAME     Catalogs/gs_f606w_cropcal.cat       # name of the output catalog
 CATALOG_TYPE     ASCII_HEAD     # NONE,ASCII,ASCII_HEAD, ASCII_SKYCAT,
                                 # ASCII_VOTABLE, FITS_1.0 or FITS_LDAC
 PARAMETERS_NAME  SExtractorConfig/hooshang.param  # name of the file containing catalog contents
@@ -50,7 +50,7 @@ PHOT_AUTOAPERS   0.0,0.0        # <estimation>,<measurement> minimum apertures
 SATUR_LEVEL      50000.0        # level (in ADUs) at which arises saturation
 SATUR_KEY        SATURATE       # keyword for saturation level (in ADUs)
  
-MAG_ZEROPOINT    26.493            # magnitude zero-point
+MAG_ZEROPOINT    25.993         # magnitude zero-point
 MAG_GAMMA        4.0            # gamma of emulsion (for photographic scans)
 GAIN             0.0            # detector gain in e-/ADU
 GAIN_KEY         GAIN           # keyword for detector gain in e-/ADU
