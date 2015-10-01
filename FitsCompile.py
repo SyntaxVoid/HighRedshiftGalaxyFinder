@@ -38,19 +38,23 @@ center_f606w = C/5917.7
 center_f775w = C/7693.0
 center_f850l = C/9145.2
 
-print("---f125w---")
-functions.fits_add([f1,f2], 'FullMaps/gs_f125w_cropcal.fits', header_index = 1, conversion_factor = CONVERSION/center_f125w)
+
+def run():
+    print("---f125w---")
+    functions.fits_add([f1,f2], 'FullMaps/gs_f125w_cropcal.fits', header_index = 1, conversion_factor = CONVERSION/center_f125w)
 
 
-print("---f160w---")
-functions.fits_add([f3,f4], 'FullMaps/gs_f160w_cropcal.fits', header_index = 1, conversion_factor = CONVERSION/center_f160w)
+    print("---f160w---")
+    functions.fits_add([f3,f4], 'FullMaps/gs_f160w_cropcal.fits', header_index = 1, conversion_factor = CONVERSION/center_f160w)
 
 
-print("---f606w---")
-functions.fits_add([f5,f6], 'FullMaps/gs_f606w_cropcal.fits', header_index = 1, conversion_factor = CONVERSION/center_f606w)
+    print("---f606w---")
+    functions.fits_add([f5,f6], 'FullMaps/gs_f606w_cropcal.fits', header_index = 1, conversion_factor = CONVERSION/center_f606w)
 
-print("---f775w---")
-functions.fits_add([f7,f8], 'FullMaps/gs_f775w_cropcal.fits', header_index = 1, conversion_factor = CONVERSION/center_f775w)
+    print("---f775w---")
+    functions.fits_add([f7,f8], 'FullMaps/gs_f775w_cropcal.fits', header_index = 1, conversion_factor = CONVERSION/center_f775w)
 
-print("---f850l---")
-functions.fits_add([f9,f10],'FullMaps/gs_f850l_cropcal.fits', header_index = 1, conversion_factor = CONVERSION/center_f850l)
+    print("---f850l---")
+    functions.fits_add([f9,f10],'FullMaps/gs_f850l_cropcal.fits', header_index = 1, conversion_factor = CONVERSION/center_f850l)
+
+    return

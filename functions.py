@@ -6,12 +6,16 @@
 import pyfits
 import os
 import sys
-import matplotlib.pyplot as plt
+import matplotlib.pyplot
+from math import log10
+import numpy
 
 
 
 def check_paths(paths):
     # Checks a list of file paths to ensure they are valid.
+    if len(paths) == 0:
+        raise IndexError('Your list of file paths is empty.')
     for f in paths:
         if not os.path.isfile(f):
             raise os.error('File path does not exist: \'{}\''.format(f))
@@ -49,8 +53,8 @@ def fits_add(file_paths, destination, header_index = 0, conversion_factor = 1.0)
     for f in file_paths:
         HDU = pyfits.open(f)
         d_list.append(HDU[0].data)
-        h = HDU[0].header
         HDU.close()
+    h = pyfits.open(file_paths[header_index])[0].header
     data_sum = sum(d_list) * conversion_factor / len(file_paths)
     pyfits.writeto(destination, data_sum, header = h, clobber = 1)
     return
@@ -82,7 +86,49 @@ def cat_add(file_paths, destination):
             out_file.write("\n")
     return
 
-def param_get(in_file, columns):
+
+def flux2mag(flux):
+    # Returns the magnitude of a flux given in uJy
+    return -2.5*log10(flux) + 23.9 if flux > 0 else 99.
+
+
+def flux_list2mag(flux_list):
+    # Returns a list of magnitudes from a list of fluxes
+    return [flux2mag(x) for x in flux_list]
+
+def mag_errors(matched_catalog,my_mag_column,public_flux_column,data_start,option = None):
+    my_mag = param_get(matched_catalog,[my_mag_column],data_start)[0]
+    public_flux = param_get(matched_catalog,[public_flux_column],data_start)[0]
+    public_mag = flux_list2mag(public_flux)
+    deltas = [ ]
+    my_mag_OUT = [ ]
+    public_mag_OUT = [ ]
+    for a,b in zip(my_mag,public_mag):
+        if any([a==99.,b==99.]):
+            continue
+        else:
+            deltas.append(a-b)
+            my_mag_OUT.append(a)
+            public_mag_OUT.append(b)
+    if option == None:
+        return deltas
+    if 'stats' in option:
+        sys.stdout.write("Std: "+str(numpy.std(deltas))+"\n")
+        sys.stdout.write("Avg: "+str(numpy.mean(deltas))+"\n")
+    if 'plot' in option:
+        title = matched_catalog.replace("Matches/Cats/Matched_","")
+        title = title.replace(".cat","").upper()
+        matplotlib.pyplot.figure()
+        matplotlib.pyplot.plot(my_mag_OUT,deltas,'go')
+        matplotlib.pyplot.grid(True)
+        matplotlib.pyplot.xlabel('My Magnitude')
+        matplotlib.pyplot.ylabel('My Magnitude - Public Magnitude')
+        matplotlib.pyplot.title(title)
+        matplotlib.pyplot.show(block=False)
+    return [my_mag_OUT,public_mag_OUT,deltas]
+
+
+def param_get(in_file, columns, data_begin_line = 1):
     # Opens a catalog file written by SExtractor and returns a list of lists of each of the
     # column numbers in 'columns'. Options is None by default which will not do anything.
     # Currently s
@@ -92,7 +138,7 @@ def param_get(in_file, columns):
     for i in range(0,n):
         p_list.append([])
     with open(in_file) as f:
-        data_lines = f.readlines()[1:]
+        data_lines = f.readlines()[data_begin_line-1:]
         for line in data_lines:
             x = line.split()
             for i in range(0,n):
@@ -138,9 +184,4 @@ def plot_mag_errors(mag1, mag2):
     pass
 
 if __name__ == '__main__':
-    test_file = "TestCat.cat"
-    param_list = [3,9]
-    [mag1,mag2] = param_get(test_file,param_list)
-    delta_mag = list_operate(mag1,mag2,'-')
-    plot_mag_errors(mag1,mag2)
     pass

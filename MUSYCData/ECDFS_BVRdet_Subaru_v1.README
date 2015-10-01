@@ -1,0 +1,166 @@
+This is the README to the MUSYC Subaru v1.0 Catalog generated Febuary 2010
+ECDFS_BVRdet_Subaru_v1
+
+The catalogue contains over 84402 entries with positional and flux information from 
+  Sextractor and photometric redshift output from EAzY http://www.astro.yale.edu/eazy/
+  (Brammer et al. 2008)
+
+Please read the following notes on the catalog; column descriptions are listed below:
+(1) The catalog includes photometry in 32 MUSYC images of the ECDF-S region (including
+     UU38BVRIzJHK, 18 medium bands and 4 IRAC channels) for all sources detected in the 
+     combined BVR image.   More details about the photometry can be found in 
+     Cardamone et al. 2010, APJS.
+(2) The first 7 columns are standard outputs (Astrometric and geometric parameters) of 
+     SExstractor (http://terapix.iap.fr/IMG/pdf/sextractor.pdf)
+(3) Fluxes are SExtractor aperature fluxes in units of uJy [micro-Jansky].
+     In the catalog, this flux is listed in column #16, e.g. "FLUX_R".
+(4) Total fluxes for each source can be computed using the ratio of the AUTO flux to 
+     the APER Flux in the BVR image and the TOTCOR correction fraction computed using a 
+     stellar growth curve and a total aperture based on the kron radius.  Such that
+        F_TOT = F_APER * (BVR_FLUX_AUTO / F_BVR) * TOTCOR
+(5) We calculate the expected Galactic extinction in each band, assuming R = 3.1 and 
+     using the Galactic Extinction Curve of Cardelli et al. (1989) with updates in the 
+     optical region from O’Donnell (1994).  We compute additional photometric offsets 
+     for each filter using a linear combination of galaxy templates to account for small
+     offsets in photometry accross our photometric bands.  See Cardamone et al. 2010 
+     for more details.
+
+    The following offsets should be applied to each filter, in order to obtain a 
+    corrected total flux:
+    	F_corrected=F_TOT * EXTCOR * COLCOR
+
+	   FILTER  EXTCOR  COLCOR
+	   ------  ------  ------
+             U38   1.038   1.185
+               U   1.040   1.253
+               B   1.032   0.952
+               V   1.026   0.934
+               R   1.020   0.933
+               I   1.013   0.971
+               z   1.012   0.866
+               J   1.007   1.022
+               H   1.005   1.011
+               K   1.003   0.791
+           IA427   1.035   0.769
+           IA445   1.034   0.892
+           IA464   1.032   1.054
+           IA484   1.030   0.934
+           IA505   1.028   0.874
+           IA527   1.027   0.990
+           IA550   1.025   0.891
+           IA574   1.024   0.952
+           IA598   1.022   0.942
+           IA624   1.021   0.898
+           IA651   1.020   0.971
+           IA679   1.020   1.033
+           IA709   1.019   1.001
+           IA738   1.018   0.952
+           IA767   1.017   0.924
+           IA797   1.016   0.933
+           IA827   1.015   1.103
+           IA856   1.013   0.907
+          IRAC36   1.001   1.000
+          IRAC45   1.001   1.000
+          IRAC58   1.001   1.000
+          IRAC80   1.000   1.000
+
+(5) Objects close to bright stars or close to the border of the images, do not have 
+     reliable  measured flux.  Flag Values (1-124) are reported as measured by 
+     SExtractor, but flag values are offset by a value of 1000 in each band where the 
+     source lies off the edge of the region covered by the imaging or where the source
+     lies inside the area covered by the brightest satuarted stars.
+
+    SExtractor flag FLAGS contain, coded in additive numbers, all the extraction flags
+      as a sum of powers of 2:
+        1 The object has neighbours, bright and close enough to 
+          significantly bias the MAG AUTO photometry or bad 
+          pixels (more than 10% of the integrated area affected),
+        2 The object was originally blended with another one,
+        4 At least one pixel of the object is saturated (or very close to),
+        8 The object is truncated (too close to an image boundary),
+        16 Object's aperture data are incomplete or corrupted,
+        32 Object's isophotal data are incomplete or corrupted
+        64 A memory overflow occurred during deblending,        
+        128 A memory overflow occurred during extraction.
+
+(7) To go from flux in uJy to AB magnitude, please use: 
+	 -2.5 log(flux) + 23.9
+	 
+Expanded Column Destriptions:
+
+Column             Units  Descripton
+--------------------------------------------------------------------------------
+   NUM              int     Sequential Object Identifier, beginning from 0
+   RA               [deg]   right ascension J2000 from SExtractor	 
+   DEC              [deg]   declination J2000 from SExtractor           
+   CLASS_STAR       0->1    Sextractor neural network classifier, 0 (Galaxy) -> 1 (star)
+   KRON_RADIUS      [pix]   Sextractor Kron_radius
+   A_IMAGE          [pix]   Sextractor parameter measuring major axis of image profile
+   B_IMAGE          [pix]   Sextractor parameter measuring minor axis of image profile
+   THETA_IMAGE      [pix]   Sextractor parameter measuring angle (counter-clockwise from the X-axis) of image profile
+   AP_TOT           [pix]   Size of total apeture radius 
+   TOTCOR           factor  Approximate correction factor from Auto to total magnitude
+   BVR_FLUX_AUTO    muJy    SExtractor AUTO flux measured on BVR image
+   BVR_FLUXERR_AUTO muJy    SExtractor AUTO flux error measured on BVR image
+   F_BVR            muJy    Sextractor flux from aperture radius = 1xFWHM
+   E_BVR            muJy    Error in flux (From empty apertures of size 1xFWHM)
+   F_IA427          muJy    Sextractor flux from aperture radius = 1xFWHM
+   E_IA427          muJy    Error in flux (From empty apertures of size 1xFWHM)
+   		    	    Note that there are 32 pairs of these columns, one for each filter.
+   BVR_FLAGS        int     SExtractor Flag from BVR detection image (see Note 7)
+   MUSYCID*	    int	    Number of Corresponding source in MUSYC broad band image catalog (Gawiser et al. 2006)
+   XR_FLAG**	    int	    Flag 1 if detected source is an X-ray Counterpart (Cardamone et al. 2008)
+   Z_SPEC_ALL       float   Best Spectroscopic redshift ^1
+   Z_SPEC_SRC       float   Catalog from which adopted specz is taken ^1
+   Z_SPEC_QUAL      int     Quality Flag from Orginal Survey ^1
+   Z_PEAK           float   Redshift estimate from EAzY
+   Z_PHOT_L68       float   68 % confidence lower limit EAzY
+   Z_PHOT_U68       float   68 % confidence upper limit EAzY
+   CHI_ZPHOT        float   Chi-squared value of EAzY best fit template combination
+   Q_Z              float   Quality Flag from EAzY
+   STAR_FLAG	    0->1    1 if EAzY fit to stellar template is preferred
+   V_RF		    float   Rest-frame V-band flux from EAzY
+   U-V_RF	    float   Rest-frame U-V band color from EAzY
+   V-J_RF	    float   Rest-frame V-J band color from EAzY
+--------------------------------------------------------------------------------
+*     There are 84410 sources in the original MUSYC BVR-detected catalog (Gawiser et al. 2006), 
+       47 of which are missing in this catalog.  The missing sources have vmag[AB] ~26 or fainter, 
+       and were not detected as individual sources by Sextracted in most of the 32 bands.
+**    X-ray counterparts included an additional QSO template when finding redshift solutions and rest frame colors in EAzY
+^1   Best redshift taken from compilations by Gabe & the GOODS team as well as the literature.
+     Source        Number (QF indicated)
+     1		   VVDS, CIMOS VLT Deep Survey
+		   	 1: 50% confidence in the redshift
+			 2: 75% confidence in the redshift
+			 3: 95% confidence in the redshift
+			 4: 100% confidence in the redshift
+			 9:  Single emission line objects
+     2		   Szokoly et al. 2004
+		   	 3.0: reliable redshift determination with unambigous X-ray counterpart
+			 2.0: reliable redshift determination
+			 1.0: detection of some features (typically single narrow EL)
+			 0.5: hint of some spectral features
+			 0.0: no success
+     3		   Croom et al. 2001
+     5		   Van der Wel et al. 2004
+     6		   Bunker et al. 2003
+     7		   Stanway et al. 2004
+     10		   Cristiani et al. 2000
+     11		   Strogler et al. 2004
+     13		   Stanway et al. 2004
+     18	 	   MUSYC, Lira et al., in prep
+     19		   Treister et al 2009
+     20		   Cimatti et al. 2002 (K20)
+     21		   Kriek et al.
+     22		   VLT/FORS2 Vanzella et al. 2008
+		   	 A: Solid redshift determination
+			 B: likely redshift determination
+			 C: tentative redshift determination
+     23		   GOODS VIMOS (Balestra et al. 2010) Low Res Blue (LR) spectra v2.0.1
+		   	 1:100% confidence in the redshift
+			 2: 60% confidence in the redshift
+			 3: 20% confidence in the redshift
+     24		   GOODS VIMOS (Balestra et al. 2010) Med Res Orange (MR) spectra v2.0
+		   	 1: 100% confidence in the redshift
+			 2: 95% confidence in the redshift
+			 3: 60% confidence in the redshift
