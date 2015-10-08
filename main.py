@@ -23,12 +23,10 @@ f775 -- I -- Column 25
 f850 -- z -- Column 27
 '''
 
-
-
 if __name__ == '__main__':
-    FITS       = True
-    CATS       = True
-    ERRORS     = True
+    FITS       = 0
+    CATS       = 0
+    ERRORS     = 1
 
     if FITS:
         print('. . .Compiling Fits Images. . .')
@@ -44,33 +42,33 @@ if __name__ == '__main__':
         functions.cat_add(['Catalogs/'+ f for f in os.listdir('Catalogs/')],'MASTER.cat')
         print('-'*28)
 
+
     if ERRORS:
         print('. . .Compiling Magnitudes and Errors. . .')
 
-        # -- f125w is in the J band which is column 29 of the public catalog. (column 36 of matched)
+        # -- f125w is in the J band which is column 29 of the public catalog. (column 34 of matched)
         print("\n"+"="*10+"F125W Magnitude Errors"+"="*10)
         [f125_my_mag,f125_public_mag,f125_deltas] = \
-            functions.mag_errors('Matches/Cats/Matched_f125w.cat',6,36,2,['stats','plot'])
+            functions.mag_errors('Matches/Cats/Matched_f125w.cat',4,34,2,['stats','plot'])
 
-
-        # -- f160w is in the H band which is column 31 of the public catalog. (column 38 of matched)
+        # -- f160w is in the H band which is column 31 of the public catalog. (column 36 of matched)
         print("\n"+"="*10+"F160W Magnitude Errors"+"="*10)
         [f160_my_mag,f160_public_mag,f160_deltas] = \
-            functions.mag_errors('Matches/Cats/Matched_f160w.cat',6,38,2,['stats','plot'])
+            functions.mag_errors('Matches/Cats/Matched_f160w.cat',4,36,2,['stats','plot'])
 
-        # -- f606w is in the V band which is column 21 of the public catalog. (column 28 of matched)
+        # -- f606w is in the V band which is column 21 of the public catalog. (column 26 of matched)
         print("\n"+"="*10+"F606W Magnitude Errors"+"="*10)
         [f606_my_mag,f606_public_mag,f606_deltas] = \
-            functions.mag_errors('Matches/Cats/Matched_f606w.cat',6,28,2,['stats','plot'])
+            functions.mag_errors('Matches/Cats/Matched_f606w.cat',4,26,2,['stats','plot'])
 
-        # -- f775w is in the I band which is column 25 of the public catalog. (column 32 of matched)
+        # -- f775w is in the I band which is column 25 of the public catalog. (column 30 of matched)
         print("\n"+"="*10+"F775W Magnitude Errors"+"="*10)
         [f775_my_mag,f775_public_mag,f775_deltas] = \
-            functions.mag_errors('Matches/Cats/Matched_f775w.cat',6,32,2,['stats','plot'])
+            functions.mag_errors('Matches/Cats/Matched_f775w.cat',4,30,2,['stats','plot'])
 
-        # -- f850l is in the z band which is column 27 of the public catalog. (column 34 of matched)
+        # -- f850l is in the z band which is column 27 of the public catalog. (column 32 of matched)
         print("\n"+"="*10+"F850L Magnitude Errors"+"="*10)
         [f850_my_mag,f850_public_mag,f850_deltas] = \
-            functions.mag_errors('Matches/Cats/Matched_f850l.cat',6,34,2,['stats','plot'])
+            functions.mag_errors('Matches/Cats/Matched_f850l.cat',4,32,2,['stats','plot'])
 
         show() # To stop the windows from immediately being closed at end of script

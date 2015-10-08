@@ -14,11 +14,17 @@ DETECTION_IMAGE = "FullMaps/gs_f160w_cropcal.fits"
 #                          and                               #
 #        http://www.stsci.edu/hst/wfc3/phot_zp_lbn           #
 ##############################################################
-ZP_f125w = 26.2303
-ZP_f160w = 25.9546
-ZP_f606w = 26.493
-ZP_f775w = 25.662
-ZP_f850l = 24.857
+# ZP_f125w = 26.2303
+# ZP_f160w = 25.9546
+# ZP_f606w = 26.493
+# ZP_f775w = 25.662
+# ZP_f850l = 24.857
+
+ZP_f125w = 0
+ZP_f160w = 0
+ZP_f606w = 0
+ZP_f775w = 0
+ZP_f850l = 0
 
 
 def run():

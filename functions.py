@@ -10,8 +10,6 @@ import matplotlib.pyplot
 from math import log10
 import numpy
 
-
-
 def check_paths(paths):
     # Checks a list of file paths to ensure they are valid.
     if len(paths) == 0:
@@ -89,20 +87,29 @@ def cat_add(file_paths, destination):
 
 def flux2mag(flux):
     # Returns the magnitude of a flux given in uJy
-    return -2.5*log10(flux) + 23.9 if flux > 0 else 99.
+    #sys.stdout.write(str(flux) + '--')
+    return -2.5*log10(flux) + 23.9 if flux > 0. else 99.
 
 
 def flux_list2mag(flux_list):
     # Returns a list of magnitudes from a list of fluxes
     return [flux2mag(x) for x in flux_list]
 
-def mag_errors(matched_catalog,my_mag_column,public_flux_column,data_start,option = None):
-    my_mag = param_get(matched_catalog,[my_mag_column],data_start)[0]
+def mag_errors(matched_catalog,my_flux_column,public_flux_column,data_start,options = None):
+    #my_mag = param_get(matched_catalog,[my_mag_column],data_start)[0]
+
+    my_flux_Jy = param_get(matched_catalog,[my_flux_column],data_start)[0]
+    my_flux_uJy = [ x * pow(10,6) for x in my_flux_Jy]
+
+    my_mag = flux_list2mag(my_flux_uJy)
+
     public_flux = param_get(matched_catalog,[public_flux_column],data_start)[0]
     public_mag = flux_list2mag(public_flux)
+
     deltas = [ ]
     my_mag_OUT = [ ]
     public_mag_OUT = [ ]
+
     for a,b in zip(my_mag,public_mag):
         if any([a==99.,b==99.]):
             continue
@@ -110,12 +117,13 @@ def mag_errors(matched_catalog,my_mag_column,public_flux_column,data_start,optio
             deltas.append(a-b)
             my_mag_OUT.append(a)
             public_mag_OUT.append(b)
-    if option == None:
-        return deltas
-    if 'stats' in option:
+
+    if options == None:
+        return [my_mag_OUT,public_mag_OUT,deltas]
+    if 'stats' in options:
         sys.stdout.write("Std: "+str(numpy.std(deltas))+"\n")
         sys.stdout.write("Avg: "+str(numpy.mean(deltas))+"\n")
-    if 'plot' in option:
+    if 'plot' in options:
         title = matched_catalog.replace("Matches/Cats/Matched_","")
         title = title.replace(".cat","").upper()
         matplotlib.pyplot.figure()
@@ -131,7 +139,6 @@ def mag_errors(matched_catalog,my_mag_column,public_flux_column,data_start,optio
 def param_get(in_file, columns, data_begin_line = 1):
     # Opens a catalog file written by SExtractor and returns a list of lists of each of the
     # column numbers in 'columns'. Options is None by default which will not do anything.
-    # Currently s
     check_list_type(columns,int)
     p_list = [ ]
     n = len(columns)

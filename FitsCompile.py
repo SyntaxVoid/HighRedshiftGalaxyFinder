@@ -7,17 +7,18 @@ import functions
 
 
 
-CONVERSION = 46117.64706
-C = 3 * pow(10,10) #speed of light m/s
+CONVERSION = 46117.647060
+C = 299792458. # speed of light m/s
+
 # To convert nW . m^-2 . sr^-1 to Jy
 #
 #  nW    1      1 W             1 sr             (0.14 arcsec)^2      1         1 Jy
 # --- x --- x ------- x -------------------  x  ------------------ x --- x -------------------
 # m^2    sr   10^9 nW   4.25*10^10 arcsec^2        (1 pixel)^2        f    10^-26 W.m^-2.Hz^-1
 #
-#                       1
-# = 4.6117.64076   x   --- Jy
-#                       f
+#                     1
+# = 46117.640760  x  --- Jy
+#                     f
 
 f1 = 'HalfMaps/gs_f125w_half1_cropcal.fits'
 f2 = 'HalfMaps/gs_f125w_half2_cropcal.fits'
@@ -32,11 +33,11 @@ f10= 'HalfMaps/gs_f850l_half2_cropcal.fits'
 
 # Central wavelengths were found from http://www.stsci.edu/hst/wfc3/documents/ISRs/2003/WFC3-2003-07.pdf
 # and http://etc.stsci.edu/etcstatic/users_guide/appendix_b_acs.html
-center_f125w = C/12449.36
-center_f160w = C/15405.16
-center_f606w = C/5917.7
-center_f775w = C/7693.0
-center_f850l = C/9145.2
+center_f125w = C/(12449.36*pow(10,-10))
+center_f160w = C/(15405.16*pow(10,-10))
+center_f606w = C/(5917.7*pow(10,-10))
+center_f775w = C/(7693.0*pow(10,-10))
+center_f850l = C/(9145.2*pow(10,-10))
 
 
 def run():
