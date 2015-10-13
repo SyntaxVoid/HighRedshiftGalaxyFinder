@@ -95,16 +95,28 @@ def flux_list2mag(flux_list):
     # Returns a list of magnitudes from a list of fluxes
     return [flux2mag(x) for x in flux_list]
 
-def mag_errors(matched_catalog,my_flux_column,public_flux_column,data_start,options = None):
+def mag_errors(matched_catalog,
+               flux_or_mag,
+               my_data_column,
+               public_flux_column,
+               data_start,
+               options = None):
     #my_mag = param_get(matched_catalog,[my_mag_column],data_start)[0]
+    if flux_or_mag == 'flux':
+        my_flux_Jy = param_get(matched_catalog,[my_data_column],data_start)[0]
+        my_flux_uJy = [ x * pow(10,6) for x in my_flux_Jy]
+        my_mag = flux_list2mag(my_flux_uJy)
+    elif flux_or_mag == 'mag':
+        my_mag = param_get(matched_catalog,[my_data_column],data_start)[0]
+    else:
+        raise ValueError('Expected flux_or_mag to be either \'flux\' or \'mag\'')
 
-    my_flux_Jy = param_get(matched_catalog,[my_flux_column],data_start)[0]
-    my_flux_uJy = [ x * pow(10,6) for x in my_flux_Jy]
-
-    my_mag = flux_list2mag(my_flux_uJy)
 
     public_flux = param_get(matched_catalog,[public_flux_column],data_start)[0]
     public_mag = flux_list2mag(public_flux)
+
+    for x,y in zip(my_mag[:10],public_mag[:10]):
+        print("{} --- {}".format(x,y))
 
     deltas = [ ]
     my_mag_OUT = [ ]
