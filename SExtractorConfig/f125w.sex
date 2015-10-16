@@ -12,7 +12,7 @@ PARAMETERS_NAME  SExtractorConfig/hooshang.param  # name of the file containing 
 #------------------------------- Extraction ----------------------------------
  
 DETECT_TYPE      CCD            # CCD (linear) or PHOTO (with gamma correction)
-DETECT_MINAREA   5              # min. # of pixels above threshold
+DETECT_MINAREA   3              # min. # of pixels above threshold
 
 DETECT_THRESH    0.5            # <sigmas> or <threshold>,<ZP> in mag.arcsec-2
 ANALYSIS_THRESH  0.5            # <sigmas> or <threshold>,<ZP> in mag.arcsec-2
@@ -24,7 +24,7 @@ DEBLEND_NTHRESH  64             # Number of deblending sub-thresholds
 DEBLEND_MINCONT  0.005          # Minimum contrast parameter for deblending
  
 CLEAN            Y              # Clean spurious detections? (Y or N)?
-CLEAN_PARAM      0.5            # Cleaning efficiency
+CLEAN_PARAM      1.0            # Cleaning efficiency
  
 #-------------------------------- WEIGHTing ----------------------------------
 
@@ -40,8 +40,8 @@ FLAG_TYPE        OR             # flag pixel combination: OR, AND, MIN, MAX
 
 #------------------------------ Photometry -----------------------------------
  
-PHOT_APERTURES   2              # MAG_APER aperture diameter(s) in pixels
-PHOT_AUTOPARAMS  1, 2       # MAG_AUTO parameters: <Kron_fact>,<min_radius>
+PHOT_APERTURES   5              # MAG_APER aperture diameter(s) in pixels
+PHOT_AUTOPARAMS  2.5, 3.5       # MAG_AUTO parameters: <Kron_fact>,<min_radius>
 PHOT_PETROPARAMS 2.0, 3.5       # MAG_PETRO parameters: <Petrosian_fact>,
                                 # <min_radius>
 PHOT_AUTOAPERS   0.0,0.0        # <estimation>,<measurement> minimum apertures
@@ -49,17 +49,17 @@ PHOT_AUTOAPERS   0.0,0.0        # <estimation>,<measurement> minimum apertures
 
 SATUR_LEVEL      50000.0        # level (in ADUs) at which arises saturation
 SATUR_KEY        SATURATE       # keyword for saturation level (in ADUs)
- 
+
 MAG_ZEROPOINT    0.0            # magnitude zero-point
-#MAG_GAMMA       4.0            # gamma of emulsion (for photographic scans)
+MAG_GAMMA        4.0            # gamma of emulsion (for photographic scans)
 GAIN             0.0            # detector gain in e-/ADU
 GAIN_KEY         GAIN           # keyword for detector gain in e-/ADU
-PIXEL_SCALE      0              # size of pixel in arcsec (0=use FITS WCS info)
- 
+PIXEL_SCALE      1.0            # size of pixel in arcsec (0=use FITS WCS info)
+
 #------------------------- Star/Galaxy Separation ----------------------------
- 
-#SEEING_FWHM      1.2            # stellar FWHM in arcsec
-#STARNNW_NAME     default.nnw    # Neural-Network_Weight table filename
+
+SEEING_FWHM      1.2            # stellar FWHM in arcsec
+STARNNW_NAME     default.nnw    # Neural-Network_Weight table filename
  
 #------------------------------ Background -----------------------------------
  

@@ -85,21 +85,86 @@ def cat_add(file_paths, destination):
     return
 
 
-def flux2mag(flux):
+# def flux2mag(flux):
+#     # Returns the magnitude of a flux given in uJy
+#     #sys.stdout.write(str(flux) + '--')
+#     return -2.5*log10(flux) + 23.9 if flux > 0. else 99.
+#
+#
+# def flux_list2mag(flux_list):
+#     # Returns a list of magnitudes from a list of fluxes
+#     return [flux2mag(x) for x in flux_list]
+#
+# def mag_errors(matched_catalog,
+#                flux_or_mag,
+#                my_data_column,
+#                public_flux_column,
+#                data_start,
+#                options = None):
+#     #my_mag = param_get(matched_catalog,[my_mag_column],data_start)[0]
+#     if flux_or_mag == 'flux':
+#         my_flux_Jy = param_get(matched_catalog,[my_data_column],data_start)[0]
+#         my_flux_uJy = [ x * pow(10,6) for x in my_flux_Jy]
+#         my_mag = flux_list2mag(my_flux_uJy)
+#     elif flux_or_mag == 'mag':
+#         my_mag = param_get(matched_catalog,[my_data_column],data_start)[0]
+#     else:
+#         raise ValueError('Expected flux_or_mag to be either \'flux\' or \'mag\'')
+#
+#
+#     public_flux = param_get(matched_catalog,[public_flux_column],data_start)[0]
+#     public_mag = flux_list2mag(public_flux)
+#
+#     deltas = [ ]
+#     my_mag_OUT = [ ]
+#     public_mag_OUT = [ ]
+#
+#     for a,b in zip(my_mag,public_mag):
+#         if any([a==99.,b==99.]):
+#             continue
+#         else:
+#             deltas.append(a-b)
+#             my_mag_OUT.append(a)
+#             public_mag_OUT.append(b)
+#
+#     if options == None:
+#         return [my_mag_OUT,public_mag_OUT,deltas]
+#     if 'stats' in options:
+#         sys.stdout.write("Std: "+str(numpy.std(deltas))+"\n")
+#         sys.stdout.write("Avg: "+str(numpy.mean(deltas))+"\n")
+#     if 'plot' in options:
+#         title = matched_catalog.replace("Matches/Cats/Matched_","")
+#         title = title.replace(".cat","").upper()
+#         fig = matplotlib.pyplot.figure()
+#         matplotlib.pyplot.plot(my_mag_OUT,deltas,'go')
+#         #matplotlib.pyplot.plot(my_mag_OUT,public_mag_OUT,'go')
+#         matplotlib.pyplot.grid(True,color='white')
+#         matplotlib.pyplot.xlabel('My Magnitude')
+#         matplotlib.pyplot.ylabel('My Magnitude - Public Magnitude')
+#         #matplotlib.pyplot.ylabel('Public Magnitude')
+#         ax = matplotlib.pyplot.gca()
+#         ax.set_axis_bgcolor('white')
+#         matplotlib.pyplot.title(title)
+#
+#         matplotlib.pyplot.show(block=False)
+#
+#     return [my_mag_OUT,public_mag_OUT,deltas]
+
+def flux2mag(flux,zp = 23.9):
     # Returns the magnitude of a flux given in uJy
-    #sys.stdout.write(str(flux) + '--')
-    return -2.5*log10(flux) + 23.9 if flux > 0. else 99.
+    return -2.5*log10(flux) + zp if flux > 0. else 99.
 
 
-def flux_list2mag(flux_list):
+def flux_list2mag(flux_list,zp = 23.9):
     # Returns a list of magnitudes from a list of fluxes
-    return [flux2mag(x) for x in flux_list]
+    return [flux2mag(x,zp) for x in flux_list]
 
 def mag_errors(matched_catalog,
                flux_or_mag,
                my_data_column,
                public_flux_column,
                data_start,
+               zp = 23.9,
                options = None):
     #my_mag = param_get(matched_catalog,[my_mag_column],data_start)[0]
     if flux_or_mag == 'flux':
@@ -113,10 +178,7 @@ def mag_errors(matched_catalog,
 
 
     public_flux = param_get(matched_catalog,[public_flux_column],data_start)[0]
-    public_mag = flux_list2mag(public_flux)
-
-    for x,y in zip(my_mag[:10],public_mag[:10]):
-        print("{} --- {}".format(x,y))
+    public_mag = flux_list2mag(public_flux,zp)
 
     deltas = [ ]
     my_mag_OUT = [ ]
@@ -138,14 +200,90 @@ def mag_errors(matched_catalog,
     if 'plot' in options:
         title = matched_catalog.replace("Matches/Cats/Matched_","")
         title = title.replace(".cat","").upper()
-        matplotlib.pyplot.figure()
+        fig = matplotlib.pyplot.figure()
         matplotlib.pyplot.plot(my_mag_OUT,deltas,'go')
-        matplotlib.pyplot.grid(True)
+        #matplotlib.pyplot.plot(my_mag_OUT,public_mag_OUT,'go')
+        matplotlib.pyplot.grid(True,color='white')
         matplotlib.pyplot.xlabel('My Magnitude')
         matplotlib.pyplot.ylabel('My Magnitude - Public Magnitude')
+        #matplotlib.pyplot.ylabel('Public Magnitude')
+        ax = matplotlib.pyplot.gca()
+        ax.set_axis_bgcolor('black')
         matplotlib.pyplot.title(title)
+
         matplotlib.pyplot.show(block=False)
+
     return [my_mag_OUT,public_mag_OUT,deltas]
+
+
+def write_table(table,header,destination):
+    with open(destination,'w') as outfile:
+        format_str = "   {:8s}" + "  {:15s}"*(len(table[0])-1)
+        outfile.write(header)
+        num_lines = len(table)
+        for i in range(num_lines):
+            outfile.write(format_str.format(*[str(x) for x in table[i]]))
+            outfile.write("\n")
+    return
+
+
+def combine_catalogs(header, cats, columns, data_start, destination, conversion_factor = 1):
+    # Combines a list of catalogs (cats) row by row and adds the given header
+    # at the top of the file, writes the resulting catalog to (destination)
+    # RA and DEC MUST be the first two columns, flux and fluxerr MUST be the
+    # next two columns. (There should be 4 columns)
+    # Change conversion factor to multiple flux and fluxerr by that value. Useful when
+    # converting between Jy and uJy
+    check_paths(cats)
+    TABLE = [ ]
+    ra_col       = columns[0]
+    dec_col      = columns[1]
+    flux_col     = columns[2]
+    fluxerr_col  = columns[3]
+    for (n,c) in enumerate(cats):
+        if n == 0:
+            data = param_get(c,[ra_col,dec_col],data_start)
+            num_entries = len(data[0])
+            for i in range(num_entries):
+                TABLE.append([i+1,data[0][i],data[1][i]])
+        data = param_get(c,[flux_col,fluxerr_col],data_start)
+        for i in range(num_entries):
+            TABLE[i].append(data[0][i])
+            TABLE[i].append(data[1][i])
+
+    write_table(TABLE,header,destination)
+
+    return
+
+
+#
+#     # The following will be a list of tuples of (RA,DEC,FLUX,FLUX_ERR)
+#     FLUX_FLUXERR = [ ]
+#     RA_DEC = [ ]
+#     p = len(columns)
+#     for n,c in enumerate(cats):
+#         # n is the value of the working index of our data list
+#         temp_flux_fluxerr = [ ]
+#         data_list.append([ ]) # We add an empty list that will hold all the data for a catalog
+#         d = param_get(c,columns,data_start)
+#         q = len(d[0])
+#         for i in range(q):
+#             if n == 0:
+#                 RA_DEC.append([d[0][i],d[1][i]])
+#             temp_flux_fluxerr.append(d[2][i],d[3][i])
+#         FLUX_FLUXERR.append(temp_flux_fluxerr)
+#
+#
+#     with open(destination,'w') as outfile:
+#         outfile.write(header)
+#         format_str = "{:8d}" + " {:10s}"*(2+2*len(cats))
+#         num_entries = len(RA_DEC)
+#         for line in range(num_entries):
+#             outfile.write(format_str.format(line+1,
+#                                             RA_DEC[line][0],
+#                                             RA_DEC[line][1],
+#                                             ))
+#     return
 
 
 def param_get(in_file, columns, data_begin_line = 1):
@@ -161,6 +299,7 @@ def param_get(in_file, columns, data_begin_line = 1):
         for line in data_lines:
             x = line.split()
             for i in range(0,n):
+                #print(p_list[i])
                 p_list[i].append(float(x[columns[i]-1]))
     return p_list
 

@@ -6,8 +6,13 @@
 import functions
 
 
+tinker_value = 6.309573
 
 CONVERSION = 46117.647060
+
+
+
+
 C = 299792458. # speed of light m/s
 
 # To convert nW . m^-2 . sr^-1 to Jy
@@ -50,12 +55,12 @@ def run():
 
 
     print("---f606w---")
-    functions.fits_add([f5,f6], 'FullMaps/gs_f606w_cropcal.fits', header_index = 1, conversion_factor = CONVERSION/center_f606w)
+    functions.fits_add([f5,f6], 'FullMaps/gs_f606w_cropcal.fits', header_index = 1, conversion_factor = CONVERSION*5.2481/center_f606w)
 
     print("---f775w---")
-    functions.fits_add([f7,f8], 'FullMaps/gs_f775w_cropcal.fits', header_index = 1, conversion_factor = CONVERSION/center_f775w)
+    functions.fits_add([f7,f8], 'FullMaps/gs_f775w_cropcal.fits', header_index = 1, conversion_factor = CONVERSION*5.7544/center_f775w)
 
     print("---f850l---")
-    functions.fits_add([f9,f10],'FullMaps/gs_f850l_cropcal.fits', header_index = 1, conversion_factor = CONVERSION/center_f850l)
+    functions.fits_add([f9,f10],'FullMaps/gs_f850l_cropcal.fits', header_index = 1, conversion_factor = CONVERSION*4.7863/center_f850l)
 
     return

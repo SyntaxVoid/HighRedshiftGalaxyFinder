@@ -22,19 +22,26 @@ f775 -- I --
 f850 -- z --
 '''
 
+# ADJUSTED ZERO POINTS (ZP for uJy is 23.9)
+ZP_f125w = 23.9#+0.0
+ZP_f160w = 23.9#+0.0
+ZP_f606w = 23.9#+1.8
+ZP_f775w = 23.9#+1.9
+ZP_f850l = 23.9#+1.7
+
 if __name__ == '__main__':
     FITS       = 0  # With the Counts / Seconds map, the fits images are already compiled in the
                     # FullMaps_ORIGINAL/ Directory
 
-    CATS_Ketron= 0  # Creates catalogs using the maps that Ketron provided
+    CATS       = 0  # Creates catalogs using SExtractor
 
-    CATS_John  = 0  # Creates catalogs using the original maps in counts per second.
 
-    ERRORS     = 1  # Plot the errors in magnitude
+    ERRORS     = 0  # Plot the errors in magnitude
 
-    FLUX_OR_MAG='mag'
+
+    FLUX_OR_MAG='flux'    # Use SExtractor's flux to calculate mag or SExtractor's mag by itself.
     COL_DICT = {'flux':4,
-                'mag' :6}
+                'mag' :6} # My flux is column 4 of the catalog, my mag is column 6 of the catalog.
 
     if FITS:
         print('. . .Compiling Fits Images. . .')
@@ -43,18 +50,25 @@ if __name__ == '__main__':
         print ('-'*28)
 
 
-    if (CATS_Ketron and not CATS_John):
+    if CATS:
+        header = '''#   1 NUMBER                 Running object number                                      [count]
+#   2 ALPHA_J2000            Right ascension of barycenter (J2000)                      [deg]
+#   3 DELTA_J2000            Declination of barycenter (J2000)                          [deg]
+#   4 F125W_FLUX_AUTO        Flux within a Kron-like elliptical aperture                [count]
+#   5 F125W_FLUXERR_AUTO     RMS error for AUTO flux                                    [count]
+#   6 F160W_FLUX_AUTO        Flux within a Kron-like elliptical aperture                [count]
+#   7 F160W_FLUXERR_AUTO     RMS error for AUTO flux                                    [count]
+#   8 F606W_FLUX_AUTO        Flux within a Kron-like elliptical aperture                [count]
+#   9 F606W_FLUXERR_AUTO     RMS error for AUTO flux                                    [count]
+#  10 F775W_FLUX_AUTO        Flux within a Kron-like elliptical aperture                [count]
+#  11 F775W_FLUXERR_AUTO     RMS error for AUTO flux                                    [count]
+#  12 F850LP_FLUX_AUTO       Flux within a Kron-like elliptical aperture                [count]
+#  13 F125LP_FLUXERR_AUTO    RMS error for AUTO flux                                    [count]
+'''
         print('. . .Compiling Catalogs. . .')
         import CatCompile
-        CatCompile.run('FullMaps')
-        functions.cat_add(['Catalogs/'+ f for f in os.listdir('Catalogs/')],'MASTER.cat')
-        print('-'*28)
-
-    if (CATS_John and not CATS_Ketron):
-        print('. . .Compiling Catalogs. . .')
-        import CatCompile
-        CatCompile.run('FullMaps_ORIGINAL')
-        functions.cat_add(['Catalogs/'+ f for f in os.listdir('Catalogs/')],'MASTER.cat')
+        CatCompile.run()
+        functions.combine_catalogs(header,['Catalogs/'+ f for f in os.listdir('Catalogs/')],[2,3,4,5],8,"master.cat")
         print('-'*28)
 
 
@@ -64,26 +78,26 @@ if __name__ == '__main__':
         # -- f125w is in the J band
         print("\n"+"="*10+"F125W Magnitude Errors"+"="*10)
         [f125_my_mag,f125_public_mag,f125_deltas] = \
-            functions.mag_errors('Matches/Cats/Matched_f125w.cat',FLUX_OR_MAG,COL_DICT[FLUX_OR_MAG],42,2,['stats','plot'])
+            functions.mag_errors('Matches/Cats/Matched_f125w.cat',FLUX_OR_MAG,COL_DICT[FLUX_OR_MAG],42,2,ZP_f125w,['stats','plot'])
 
         # -- f160w is in the H band
         print("\n"+"="*10+"F160W Magnitude Errors"+"="*10)
         [f160_my_mag,f160_public_mag,f160_deltas] = \
-            functions.mag_errors('Matches/Cats/Matched_f160w.cat',FLUX_OR_MAG,COL_DICT[FLUX_OR_MAG],45,2,['stats','plot'])
+            functions.mag_errors('Matches/Cats/Matched_f160w.cat',FLUX_OR_MAG,COL_DICT[FLUX_OR_MAG],45,2,ZP_f160w,['stats','plot'])
 
         # -- f606w is in the V band
         print("\n"+"="*10+"F606W Magnitude Errors"+"="*10)
         [f606_my_mag,f606_public_mag,f606_deltas] = \
-            functions.mag_errors('Matches/Cats/Matched_f606w.cat',FLUX_OR_MAG,COL_DICT[FLUX_OR_MAG],24,2,['stats','plot'])
+            functions.mag_errors('Matches/Cats/Matched_f606w.cat',FLUX_OR_MAG,COL_DICT[FLUX_OR_MAG],24,2,ZP_f606w,['stats','plot'])
 
         # -- f775w is in the I band
         print("\n"+"="*10+"F775W Magnitude Errors"+"="*10)
         [f775_my_mag,f775_public_mag,f775_deltas] = \
-            functions.mag_errors('Matches/Cats/Matched_f775w.cat',FLUX_OR_MAG,COL_DICT[FLUX_OR_MAG],27,2,['stats','plot'])
+            functions.mag_errors('Matches/Cats/Matched_f775w.cat',FLUX_OR_MAG,COL_DICT[FLUX_OR_MAG],27,2,ZP_f775w,['stats','plot'])
 
         # -- f850l is in the z band
         print("\n"+"="*10+"F850L Magnitude Errors"+"="*10)
         [f850_my_mag,f850_public_mag,f850_deltas] = \
-            functions.mag_errors('Matches/Cats/Matched_f850l.cat',FLUX_OR_MAG,COL_DICT[FLUX_OR_MAG],33,2,['stats','plot'])
+            functions.mag_errors('Matches/Cats/Matched_f850l.cat',FLUX_OR_MAG,COL_DICT[FLUX_OR_MAG],33,2,ZP_f850l,['stats','plot'])
 
         show() # To stop the windows from immediately being closed at end of script        show() # To stop the windows from immediately being closed at end of script
