@@ -18,6 +18,13 @@ def flux_list2mag(flux_list, zp=23.9):
     return [flux2mag(x, zp) for x in flux_list]
 
 
+def snr(x):
+    # Returns the signal to noise ratio of a given list (x)
+    sigma = numpy.mean(x)
+    mu = numpy.std(x)
+    return sigma/mu
+
+
 def fits_add(file_paths, destination, header_index=0, conversion_factor=1.0):
     # Adds a list of fits files together, uses the header of file_paths[header_index]
     # and multiplies by the conversion factor if you are converting units
@@ -43,8 +50,8 @@ def mag_errors(matched_catalog,
                zp=23.9,
                options=None):
     if flux_or_mag == 'flux':
-        my_flux_jy = param_get(matched_catalog, [my_data_column], data_start)[0]
-        my_flux_ujy = [x * pow(10, 6) for x in my_flux_jy]
+        my_flux_ujy = param_get(matched_catalog, [my_data_column], data_start)[0]
+        #my_flux_ujy = [x * pow(10, 6) for x in my_flux_jy]
         my_mag = flux_list2mag(my_flux_ujy)
     elif flux_or_mag == 'mag':
         my_mag = param_get(matched_catalog, [my_data_column], data_start)[0]
@@ -102,16 +109,22 @@ def combine_catalogs(header, cats, columns, data_start, destination, conversion_
     dec_col = columns[1]
     flux_col = columns[2]
     fluxerr_col = columns[3]
+    num_params = len(columns) - 2  # We subtract 2 because of the RA/DEC columns we've already accounted for
     for (n, c) in enumerate(cats):
         if n == 0:
             data = param_get(c, [ra_col, dec_col], data_start)
             num_entries = len(data[0])
             for i in range(num_entries):
                 table.append([i+1, data[0][i], data[1][i]])
-        data = param_get(c, [flux_col, fluxerr_col], data_start)
+        data = param_get(c, columns[2:], data_start)
         for i in range(num_entries):
-            table[i].append(float(data[0][i])*conversion_factor)
-            table[i].append(float(data[1][i])*conversion_factor)
+            temp = []
+            for j in range(num_params):
+                temp.append(data[j][i])
+            for t in temp:
+                table[i].append(t)
+            #table[i].append(float(data[0][i])*conversion_factor)
+            #table[i].append(float(data[1][i])*conversion_factor)
     jtools.write_table(table, header, destination)
     return
 
@@ -129,5 +142,8 @@ def param_get(in_file, columns, data_begin_line=1):
         for line in data_lines:
             x = line.split()
             for i in range(0, n):
-                p_list[i].append(float(x[columns[i]-1]))
+                try:
+                    p_list[i].append(float(x[columns[i]-1]))
+                except:
+                    print(x)
     return p_list

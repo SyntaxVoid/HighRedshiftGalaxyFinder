@@ -19,8 +19,6 @@ DETECTION_IMAGE = "FullMaps/gs_f160w_cropcal.fits"
 # ZP_f775w = 25.662
 # ZP_f850l = 24.857
 
-# We use 23.9 as the zero point value for each band because the maps
-# have already been converted to uJy, then mag = -2.5 * log10(flux) + 23.9
 ZP_f125w = 23.9
 ZP_f160w = 23.9
 ZP_f606w = 23.9

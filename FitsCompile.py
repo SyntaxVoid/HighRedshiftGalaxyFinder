@@ -6,13 +6,13 @@
 import libs.jastro
 
 C = 299792458.  # speed of light m/s
-CONVERSION = 46117.647060
+CONVERSION = 46117.647060 * pow(10,6)
 
 # To convert nW . m^-2 . sr^-1 to Jy
 #
-#  nW    1      1 W             1 sr             (0.14 arcsec)^2      1         1 Jy
-# --- x --- x ------- x -------------------  x  ------------------ x --- x -------------------
-# m^2    sr   10^9 nW   4.25*10^10 arcsec^2        (1 pixel)^2        f    10^-26 W.m^-2.Hz^-1
+#  nW    1      1 W             1 sr             (0.14 arcsec)^2      1         1 Jy                10^6 uJy
+# --- x --- x ------- x -------------------  x  ------------------ x --- x -------------------  x  ----------
+# m^2    sr   10^9 nW   4.25*10^10 arcsec^2        (1 pixel)^2        f    10^-26 W.m^-2.Hz^-1        1 Jy
 #
 #                     1
 # = 46117.640760  x  --- Jy

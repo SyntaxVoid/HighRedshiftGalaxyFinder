@@ -1,0 +1,27 @@
+#   1 NUMBER                 Running object number                                      [count]
+#   2 ALPHA_J2000            Right ascension of barycenter (J2000)                      [deg]
+#   3 DELTA_J2000            Declination of barycenter (J2000)                          [deg]
+#   4 F125W_FLUX_AUTO        Flux within a Kron-like elliptical aperture                [uJy]
+#   5 F125W_FLUXERR_AUTO     RMS error for AUTO flux                                    [uJy]
+#   6 F125W_MAG_AUTO         Kron-like elliptical aperture magnitude                    [mag]
+#   7 F125W_MAGERR_AUTO      RMS error for AUTO magnitude                               [mag]
+#   8 F160W_FLUX_AUTO        Flux within a Kron-like elliptical aperture                [uJy]
+#   9 F160W_FLUXERR_AUTO     RMS error for AUTO flux                                    [uJy]
+#  10 F160W_MAG_AUTO         Kron-like elliptical aperture magnitude                    [mag]
+#  11 F160W_MAGERR_AUTO      RMS error for AUTO magnitude                               [mag]
+#  12 F606W_FLUX_AUTO        Flux within a Kron-like elliptical aperture                [uJy]
+#  13 F606W_FLUXERR_AUTO     RMS error for AUTO flux                                    [uJy]
+#  14 F606W_MAG_AUTO         Kron-like elliptical aperture magnitude                    [mag]
+#  15 F606W_MAGERR_AUTO      RMS error for AUTO magnitude                               [mag]
+#  16 F775W_FLUX_AUTO        Flux within a Kron-like elliptical aperture                [uJy]
+#  17 F775W_FLUXERR_AUTO     RMS error for AUTO flux                                    [uJy]
+#  18 F775W_MAG_AUTO         Kron-like elliptical aperture magnitude                    [mag]
+#  19 F775_MAGERR_AUTO       RMS error for AUTO magnitude                               [mag]
+#  20 F850LP_FLUX_AUTO       Flux within a Kron-like elliptical aperture                [uJy]
+#  21 F850LP_FLUXERR_AUTO    RMS error for AUTO flux                                    [uJy]
+#  22 F850LP_MAG_AUTO        Kron-like elliptical aperture magnitude                    [mag]
+#  23 F850LP_MAGERR_AUTO     RMS error for AUTO magnitude                               [mag]
+   3311      53.213005        -27.8744558      -0.2631988       0.02810772       99.0             99.0             0.05109914       0.07278303       27.129           1.5468           0.02392727       0.08265191       27.9528          3.7514           0.0344158        0.03651674       27.5581          1.1523           0.1747465        0.02918358       25.794           0.1814         
+   6912      53.1874612       -27.8496876      0.396987         0.05121087       24.9031          0.1401           0.210672         0.1326071        25.591           0.6836           0.2881232        0.1505877        25.2511          0.5676           0.1128204        0.06653167       26.269           0.6404           0.4807159        0.05317102       24.6953          0.1201         
+   10309     53.1328899       -27.8173556      -0.00950877      0.02111478       99.0             99.0             0.06146131       0.05467529       26.9285          0.9661           0.03826038       0.06208888       27.4431          1.7624           0.09442123       0.02743171       26.4623          0.3155           0.3186624        0.02192298       25.1417          0.0747         
+   20180     53.1643262       -27.6928992      0.03423959       0.0149304        27.5637          0.4736           0.201071         0.03866127       25.6416          0.2088           0.01609498       0.04390347       28.3833          2.9624           0.07252711       0.01939715       26.7487          0.2904           6.573734         0.01550188       21.8555          0.0026         

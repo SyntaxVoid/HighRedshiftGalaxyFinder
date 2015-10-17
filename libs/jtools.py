@@ -39,13 +39,14 @@ def list_operate(x1, x2, operation):
     if operation == '*':
         return [a * b for a, b in zip(x1, x2)]
     if operation == '/':
-        out_list = []
-        for a, b in zip(x1, x2):
-            if b == 0 and a != 0:
-                out_list.append('{}Inf'.format(sign(a)))
-            else:
-                out_list.append(a/b)
-        return out_list
+        return ["{}Inf".format(sign(a)) if (b==0 and a != 0) else a/b for a,b in zip(x1,x2)]
+        # out_list = []
+        # for a, b in zip(x1, x2):
+        #     if b == 0 and a != 0:
+        #         out_list.append('{}Inf'.format(sign(a)))
+        #     else:
+        #         out_list.append(a/b)
+        # return out_list
     raise TypeError('Expected an operation from {}'.format(acceptable_operations))
 
 
@@ -72,6 +73,9 @@ def print_list_of_list(x):
 
 def write_table(table, header, destination):
     with open(destination, 'w') as outfile:
+        if len(table) == 0:
+            outfile.write(header)
+            return
         format_str = "   {:8s}" + "  {:15s}"*(len(table[0])-1)
         outfile.write(header)
         num_lines = len(table)
