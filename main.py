@@ -66,7 +66,7 @@ if __name__ == '__main__':
     CATS       = 0  # Creates catalogs using SExtractor
 
 
-    ERRORS     = 0  # Plot the errors in magnitude
+    ERRORS     = 1  # Plot the errors in magnitude
 
     SELECT     = 1  # Run through the master catalog and select high redshift galaxies via given dropouts
 
@@ -156,7 +156,7 @@ if __name__ == '__main__':
                 #    v606_drops.append(cat_lines[i+num_params].split())
 
                 # I775 Drops
-                if SelectionCriteria.i775_dropout(v606M[i],i775M[i],z850M[i],(z850F[i]/z850Ferr[i]),(v606F[i]/v606Ferr[i])):
+                if SelectionCriteria.i775_dropout(v606M[i],i775M[i],z850M[i],(z850F[i]/z850Ferr[i]),(v606F[i]/v606Ferr[i]),i):
                     i775_drops.append(cat_lines[num_params+i].split())
         print("Selected {} objects with 4 <= z <= 6 using b435 dropout criteria".format(len(b435_drops)))
         libs.jtools.write_table(b435_drops,header,cwd + b435_cat_dir)
