@@ -23,7 +23,7 @@ def b435_dropout(b435,v606,i775,z850,SNv606,SNi775):
 
 def v606_dropout(b435,v606,i775,z850,SNz850,SNb435):
     # From Stark et. al.
-    if not _real_values(b435,v606,i775,z850,SNz850,SNb435):
+    if not _real_values([b435,v606,i775,z850,SNz850,SNb435]):
         return False
     c1 = ((v606 - i775) > (1.47 + 0.89*(i775 - z850)) or (v606 - i775)  > 2)
     c2 = (v606 - i775) > (1.2)
@@ -39,7 +39,7 @@ def i775_dropout(v606,i775,z850,SNz850,SNv606, identifier = None):
         return False
     c1 = (i775 - z850) > (1.3)
     c2 = (SNz850) > (5)
-    c3 = ((SNv606) < 2 or (v606-z850) > (2.8))
+    c3 = ((SNv606) < 2) or ((v606-z850) > (2.8))
     return all([c1,c2,c3])
 
 

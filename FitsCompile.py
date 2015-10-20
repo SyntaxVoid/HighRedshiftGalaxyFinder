@@ -4,6 +4,7 @@
 
 
 import libs.jastro
+import pyfits
 
 C = 299792458.  # speed of light m/s
 CONVERSION = 46117.647060 * pow(10,6)
@@ -54,6 +55,13 @@ def run():
                          'FullMaps/gs_f160w_cropcal.fits',
                          header_index=1,
                          conversion_factor=CONVERSION/center_f160w)
+
+    print("---f435w---")
+    b435 = pyfits.open('HalfMaps/gs_f435w_cropcal.fits')
+    b435data = b435[0].data * tinker_factor(2.2)
+    b435head = b435[0].header
+    pyfits.writeto('FullMaps/gs_f435w_cropcal.fits',b435data,b435head,clobber=1)
+
 
     print("---f606w---")
     libs.jastro.fits_add([f4, f5],

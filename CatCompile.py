@@ -19,8 +19,12 @@ DETECTION_IMAGE = "FullMaps/gs_f160w_cropcal.fits"
 # ZP_f775w = 25.662
 # ZP_f850l = 24.857
 
+
+# Every map except for 435 is in the units of uJy which has a defined ZP as 23.9.
+# The ZP for 435 was calculated from http://www.stsci.edu/hst/acs/analysis/zeropoints/zpt.py
 ZP_f125w = 23.9
 ZP_f160w = 23.9
+ZP_f435w = 25.665
 ZP_f606w = 23.9
 ZP_f775w = 23.9
 ZP_f850l = 23.9
@@ -44,6 +48,13 @@ def run():
               .format(DETECTION_IMAGE, ZP_f160w) +
               "|| sex -c SExtractorConfig/f160w.sex {} FullMaps/gs_f160w_cropcal.fits -MAG_ZEROPOINT {}"
               .format(DETECTION_IMAGE, ZP_f160w))
+
+    # f435w
+    print("---f435w---")
+    os.system("sextractor -c SExtractorConfig/f435w.sex {} FullMaps/gs_f435w_cropcal.fits -MAG_ZEROPOINT {}"
+              .format(DETECTION_IMAGE, ZP_f435w) +
+              "|| sex -c SExtractorConfig/f435w.sex {} FullMaps/gs_f435w_cropcal.fits -MAG_ZEROPOINT {}"
+              .format(DETECTION_IMAGE, ZP_f435w))
 
     # f606w
     print('---f606w---')

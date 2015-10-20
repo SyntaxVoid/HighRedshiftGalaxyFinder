@@ -1,7 +1,13 @@
 Candels_Catalog
 Matches
-HalfMaps
 test.py
 __init__.py
+
+hastrom.pro
+hextract.pro
+mrdfits.pro
+mwrfits.pro
+polywarp.pro
+
 *.pyc
 *~

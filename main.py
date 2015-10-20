@@ -15,6 +15,12 @@ import SelectionCriteria
 cwd = os.getcwd()
 
 '''
+replace 814 with 775
+'''
+
+
+
+'''
 Run Sextractor in dual mode and run with detection image as f160w
 Example command:
 
@@ -45,18 +51,22 @@ header = '''#   1 NUMBER                 Running object number                  
 #   9 F160W_FLUXERR_AUTO     RMS error for AUTO flux                                    [uJy]
 #  10 F160W_MAG_AUTO         Kron-like elliptical aperture magnitude                    [mag]
 #  11 F160W_MAGERR_AUTO      RMS error for AUTO magnitude                               [mag]
-#  12 F606W_FLUX_AUTO        Flux within a Kron-like elliptical aperture                [uJy]
-#  13 F606W_FLUXERR_AUTO     RMS error for AUTO flux                                    [uJy]
-#  14 F606W_MAG_AUTO         Kron-like elliptical aperture magnitude                    [mag]
-#  15 F606W_MAGERR_AUTO      RMS error for AUTO magnitude                               [mag]
-#  16 F775W_FLUX_AUTO        Flux within a Kron-like elliptical aperture                [uJy]
-#  17 F775W_FLUXERR_AUTO     RMS error for AUTO flux                                    [uJy]
-#  18 F775W_MAG_AUTO         Kron-like elliptical aperture magnitude                    [mag]
-#  19 F775_MAGERR_AUTO       RMS error for AUTO magnitude                               [mag]
-#  20 F850LP_FLUX_AUTO       Flux within a Kron-like elliptical aperture                [uJy]
-#  21 F850LP_FLUXERR_AUTO    RMS error for AUTO flux                                    [uJy]
-#  22 F850LP_MAG_AUTO        Kron-like elliptical aperture magnitude                    [mag]
-#  23 F850LP_MAGERR_AUTO     RMS error for AUTO magnitude                               [mag]
+#  12 F435W_FLUX_AUTO        Flux within a Kron-like elliptical aperture                [uJy]
+#  13 F435W_FLUXERR_AUTO     RMS error for AUTO flux                                    [uJy]
+#  14 F435W_MAG_AUTO         Kron-like elliptical aperture magnitude                    [mag]
+#  15 F435W_MAGERR_AUTO      RMS error for AUTO magnitude                               [mag]
+#  16 F606W_FLUX_AUTO        Flux within a Kron-like elliptical aperture                [uJy]
+#  17 F606W_FLUXERR_AUTO     RMS error for AUTO flux                                    [uJy]
+#  18 F606W_MAG_AUTO         Kron-like elliptical aperture magnitude                    [mag]
+#  19 F606W_MAGERR_AUTO      RMS error for AUTO magnitude                               [mag]
+#  20 F775W_FLUX_AUTO        Flux within a Kron-like elliptical aperture                [uJy]
+#  21 F775W_FLUXERR_AUTO     RMS error for AUTO flux                                    [uJy]
+#  22 F775W_MAG_AUTO         Kron-like elliptical aperture magnitude                    [mag]
+#  23 F775_MAGERR_AUTO       RMS error for AUTO magnitude                               [mag]
+#  24 F850LP_FLUX_AUTO       Flux within a Kron-like elliptical aperture                [uJy]
+#  25 F850LP_FLUXERR_AUTO    RMS error for AUTO flux                                    [uJy]
+#  26 F850LP_MAG_AUTO        Kron-like elliptical aperture magnitude                    [mag]
+#  27 F850LP_MAGERR_AUTO     RMS error for AUTO magnitude                               [mag]
 '''
 
 if __name__ == '__main__':
@@ -66,7 +76,7 @@ if __name__ == '__main__':
     CATS       = 0  # Creates catalogs using SExtractor
 
 
-    ERRORS     = 1  # Plot the errors in magnitude
+    ERRORS     = 0  # Plot the errors in magnitude
 
     SELECT     = 1  # Run through the master catalog and select high redshift galaxies via given dropouts
 
@@ -85,9 +95,9 @@ if __name__ == '__main__':
     if CATS:
 
         print('. . .Compiling Catalogs. . .')
-        CatCompile.run()
+        #CatCompile.run()
         libs.jastro.combine_catalogs(header,
-                                     ['Catalogs/'+ f for f in os.listdir('Catalogs/')],[2,3,4,5,6,7],8,
+                                     sorted(['Catalogs/'+ f for f in os.listdir('Catalogs/')]),[2,3,4,5,6,7],8,
                                      "master.cat",
                                      conversion_factor = 1)
         print('-'*28)
@@ -105,6 +115,11 @@ if __name__ == '__main__':
         print("\n"+"="*10+"F160W Magnitude Errors"+"="*10)
         [f160_my_mag,f160_public_mag,f160_deltas] = \
             libs.jastro.mag_errors('Matches/Cats/Matched_f160w.cat',FLUX_OR_MAG,COL_DICT[FLUX_OR_MAG],45,2,ZP_f160w,['stats','plot'])
+
+        print("\n"+"="*10+"F435W Magnitude Errors"+"="*10)
+        [f435_my_mag,f435_public_mag,f435_deltas] = \
+            libs.jastro.mag_errors('Matches/Cats/Matched_f435w.cat',FLUX_OR_MAG,COL_DICT[FLUX_OR_MAG],21,2,ZP_f160w,['stats','plot'])
+
 
         # -- f606w is in the V band
         print("\n"+"="*10+"F606W Magnitude Errors"+"="*10)
@@ -129,14 +144,14 @@ if __name__ == '__main__':
         i775_cat_dir = "/SelectedObjects/i775.cat"
 
 
-        num_params = 23  # Length (in lines) of the header of the catalog
+        num_params = 27  # Length (in lines) of the header of the catalog
         # Flux Values and Errors:
 
-        [v606F,i775F,z850F] = libs.jastro.param_get('master.cat',[12,16,20],24)
-        [v606Ferr,i775Ferr,z850Ferr] = libs.jastro.param_get('master.cat',[13,17,21],24)
+        [b435F,v606F,i775F,z850F] = libs.jastro.param_get('master.cat',[12,16,20,24],28)
+        [b435Ferr,v606Ferr,i775Ferr,z850Ferr] = libs.jastro.param_get('master.cat',[13,17,21,25],28)
 
         # Mag values and Errors
-        [v606M,i775M,z850M] = libs.jastro.param_get('master.cat',[14,18,22],24)
+        [b435M,v606M,i775M,z850M] = libs.jastro.param_get('master.cat',[14,18,22,26],28)
         # [v606Merr,i775Merr,z850Merr] = libs.jastro.param_get('master.cat',[15,19,23],24)
 
 
@@ -148,14 +163,15 @@ if __name__ == '__main__':
             num_lines = len(cat_lines)-num_params
             for i in range(num_lines):
                 # B435 Drops (Must wait for b435 data)
-                #if SelectionCriteria.b435_dropout(b435M[i],v606M[i],i775M[i],z850M[i],(v606F[i]/v606Ferr[i]),(i775F[i]/i775Ferr[i])):
-                #    b435_drops.append(cat_lines[i+num_params].split())
+                if SelectionCriteria.b435_dropout(b435M[i],v606M[i],i775M[i],z850M[i],(v606F[i]/v606Ferr[i]),(i775F[i]/i775Ferr[i])):
+                    b435_drops.append(cat_lines[i+num_params].split())
 
                 # V606 Drops (Must wait for b435 data)
-                #if SelectionCriteria.v606_dropout(b435M[i],v606M[i],i775M[i],z850M[i],(z850F[i]/z850Ferr[i]),(b435F[i]/b435Ferr[i])):
-                #    v606_drops.append(cat_lines[i+num_params].split())
+                if SelectionCriteria.v606_dropout(b435M[i],v606M[i],i775M[i],z850M[i],(z850F[i]/z850Ferr[i]),(b435F[i]/b435Ferr[i])):
+                    v606_drops.append(cat_lines[i+num_params].split())
 
                 # I775 Drops
+
                 if SelectionCriteria.i775_dropout(v606M[i],i775M[i],z850M[i],(z850F[i]/z850Ferr[i]),(v606F[i]/v606Ferr[i]),i):
                     i775_drops.append(cat_lines[num_params+i].split())
         print("Selected {} objects with 4 <= z <= 6 using b435 dropout criteria".format(len(b435_drops)))
