@@ -60,9 +60,9 @@ def z5(h160,v606,i775,z850,SNb435):
 
     c4 = SNb435 < 1
 
-    c6 = 1 #Not in z ~ 6 selection
+    c5 = 1 #Not in z ~ 6 selection
 
-    return all([c1,c2,c3,c4,c5,c6])
+    return all([c1,c2,c3,c4,c5])
 
 def z6(y105,j125,h160,v606,i775,i814,z850,SNb435,SNv606,SNi814):
     #From Bouwen et. al.

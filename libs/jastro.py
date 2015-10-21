@@ -41,6 +41,21 @@ def fits_add(file_paths, destination, header_index=0, conversion_factor=1.0):
     pyfits.writeto(destination, data_sum, header=h, clobber=1)
     return
 
+def color_color(data_sets,xaxis,yaxis,title,graphall='no'):
+    n = len(data_sets)
+    matplotlib.pyplot.figure()
+    for d in data_sets:
+        matplotlib.pyplot.plot(d[0],d[1],'o')
+        matplotlib.pyplot.xlabel(xaxis)
+        matplotlib.pyplot.ylabel(yaxis)
+        matplotlib.pyplot.title(title)
+        matplotlib.pyplot.grid(True,color = 'black')
+        ax = matplotlib.pyplot.gca()
+        ax.set_axis_bgcolor('white')
+
+    matplotlib.pyplot.show(block = False if graphall=='yes' else True)
+    return
+
 
 def mag_errors(matched_catalog,
                flux_or_mag,

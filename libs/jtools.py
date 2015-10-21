@@ -71,7 +71,15 @@ def print_list_of_list(x):
     return
 
 
-def write_table(table, header, destination):
+def write_table(table, header, destination, drop="", crit="", verbose = False):
+    #print("Selected {} objects with z~7".format(len(z7)))
+    #    libs.jtools.write_table(z7,header,cwd + z7_cat_dir)
+    #    print("\tCatalog written to {}".format(cwd + z7_cat_dir))
+    #    print("-"*88)
+    if verbose:
+        print("{} -- Selected {} objects with {}".format(drop,len(table),crit))
+        print("\tWriting catalog to {}".format(destination))
+        print("-"*88)
     with open(destination, 'w') as outfile:
         if len(table) == 0:
             outfile.write(header)
