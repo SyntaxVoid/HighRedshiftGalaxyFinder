@@ -32,6 +32,7 @@ ZP_f850l = 23.9
 
 def run():
 
+    print("\n" + "="*80)
     print("If you get a \"sextractor not found\" error, then the program will" +
           "automatically try using the \"sex\" command instead.")
 
@@ -41,6 +42,7 @@ def run():
               .format(DETECTION_IMAGE, ZP_f125w) +
               "|| sex -c SExtractorConfig/f125w.sex {} FullMaps/gs_f125w_cropcal.fits -MAG_ZEROPOINT {}"
               .format(DETECTION_IMAGE, ZP_f125w))
+    print('\tCatalog written to {}'.format(os.getcwd()+'/Catalogs/gs_f125w_cropcal.cat'))
 
     # f160w
     print('---f160w---')
@@ -48,6 +50,7 @@ def run():
               .format(DETECTION_IMAGE, ZP_f160w) +
               "|| sex -c SExtractorConfig/f160w.sex {} FullMaps/gs_f160w_cropcal.fits -MAG_ZEROPOINT {}"
               .format(DETECTION_IMAGE, ZP_f160w))
+    print('\tCatalog written to {}'.format(os.getcwd()+'/Catalogs/gs_f160w_cropcal.cat'))
 
     # f435w
     print("---f435w---")
@@ -55,6 +58,7 @@ def run():
               .format(DETECTION_IMAGE, ZP_f435w) +
               "|| sex -c SExtractorConfig/f435w.sex {} FullMaps/gs_f435w_cropcal.fits -MAG_ZEROPOINT {}"
               .format(DETECTION_IMAGE, ZP_f435w))
+    print('\tCatalog written to {}'.format(os.getcwd()+'/Catalogs/gs_f435w_cropcal.cat'))
 
     # f606w
     print('---f606w---')
@@ -62,6 +66,7 @@ def run():
               .format(DETECTION_IMAGE, ZP_f606w) +
               "|| sex -c SExtractorConfig/f606w.sex {} FullMaps/gs_f606w_cropcal.fits -MAG_ZEROPOINT {}"
               .format(DETECTION_IMAGE, ZP_f606w))
+    print('\tCatalog written to {}'.format(os.getcwd()+'/Catalogs/gs_f606w_cropcal.cat'))
 
     # f775w
     print('---f775w---')
@@ -69,6 +74,7 @@ def run():
               .format(DETECTION_IMAGE, ZP_f775w) +
               "|| sex -c SExtractorConfig/f775w.sex {} FullMaps/gs_f775w_cropcal.fits -MAG_ZEROPOINT {}"
               .format(DETECTION_IMAGE, ZP_f775w))
+    print('\tCatalog written to {}'.format(os.getcwd()+'/Catalogs/gs_f775w_cropcal.cat'))
 
     # f850l
     print('---f850l---')
@@ -76,5 +82,5 @@ def run():
               .format(DETECTION_IMAGE, ZP_f850l) +
               "|| sex -c SExtractorConfig/f850l.sex {} FullMaps/gs_f850l_cropcal.fits -MAG_ZEROPOINT {}"
               .format(DETECTION_IMAGE, ZP_f850l))
-
+    print('\tCatalog written to {}'.format(os.getcwd()+'/Catalogs/gs_f850l_cropcal.cat'))
     return
