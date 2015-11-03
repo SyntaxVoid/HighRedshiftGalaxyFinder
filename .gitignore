@@ -4,11 +4,6 @@ test.py
 __init__.py
 HalfMaps
 Candels
-hastrom.pro
-hextract.pro
-mrdfits.pro
-mwrfits.pro
-polywarp.pro
-
+TestCatalogs
 *.pyc
 *~

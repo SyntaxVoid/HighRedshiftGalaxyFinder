@@ -45,18 +45,20 @@ def color_color(data_sets, xaxis, yaxis, title,
                 xlim=[-1,4], ylim=[-1,7],
                 xthresh=None, ythresh=None, a=None, b=None,
                 graphall = 'no'):
+    graph_colors = ['ro','go','bo','mo']
     n = len(data_sets)
     matplotlib.pyplot.figure()
-    for d in data_sets:
-        matplotlib.pyplot.plot(d[0],d[1],'rx')
-        matplotlib.pyplot.xlabel(xaxis)
-        matplotlib.pyplot.ylabel(yaxis)
-        matplotlib.pyplot.title(title)
-        matplotlib.pyplot.grid(True,color = 'black')
-        ax = matplotlib.pyplot.gca()
-        ax.set_axis_bgcolor('white')
-        matplotlib.pyplot.xlim(*xlim)
-        matplotlib.pyplot.ylim(*ylim)
+    for (n,ds) in enumerate(data_sets):
+        for d in ds:
+            matplotlib.pyplot.plot(d[0],d[1],graph_colors[n])
+            matplotlib.pyplot.xlabel(xaxis)
+            matplotlib.pyplot.ylabel(yaxis)
+            matplotlib.pyplot.title(title)
+            matplotlib.pyplot.grid(True,color = 'black')
+            ax = matplotlib.pyplot.gca()
+            ax.set_axis_bgcolor('white')
+            matplotlib.pyplot.xlim(*xlim)
+            matplotlib.pyplot.ylim(*ylim)
     if xthresh is not None and ythresh is not None and a is not None and b is not None:
         matplotlib.pyplot.plot([xthresh,xthresh],[a+b*xthresh,ylim[1]],color='b',linewidth=2)
         matplotlib.pyplot.plot([xlim[0],(ythresh-a)/b],[ythresh,ythresh],color='b',linewidth=2)
