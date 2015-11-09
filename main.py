@@ -11,6 +11,7 @@ from matplotlib.pyplot import show
 
 import libs.jastro
 import libs.jtools
+import RMSCompile
 import FitsCompile
 import CatCompile
 import SelectionCriteria
@@ -56,6 +57,7 @@ header = '''#   1 NUMBER                 Running object number                  
 '''
 
 if __name__ == '__main__':
+    EXPOSURE       = 0  # Compiles the RMS maps from the EXPOSURE maps
     FITS           = 0  # Compiles Fits Files
     CATS           = 0  # Creates catalogs using SExtractor
     ERRORS         = 0  # Plot the errors in magnitude vs a private Candels catalog
@@ -63,12 +65,17 @@ if __name__ == '__main__':
     COLOR_COLOR_ME = 0  # Makes color-color plots. SELECT must be True
     SELECT_C       = 0
     COLOR_COLOR_C  = 0
-    MY_COLORS_VS_C = 1
+    MY_COLORS_VS_C = 0
+
+    if EXPOSURE:
+        RMSCompile.run()
+        pass
 
     if FITS:
         print('. . .Compiling Fits Images. . .')
         FitsCompile.run()
         print ('-'*28)
+
     if CATS:
         print('. . .Compiling Catalogs. . .')
         CatCompile.run()
@@ -99,8 +106,8 @@ if __name__ == '__main__':
 
         print("\n"+"="*10+"F850L Magnitude Errors"+"="*10)
         libs.jastro.mag_errors('Matches/Cats/Matched_f850l.cat',FLUX_OR_MAG,4,33,2,ZP_f850l,['stats','plot'])
-
         show() # To stop the windows from immediately being closed at end of script
+
     if SELECT_ME:
         print("\n" + "="*80)
         num_params = header.count('\n')  # Length (in lines) of the header of the catalog
