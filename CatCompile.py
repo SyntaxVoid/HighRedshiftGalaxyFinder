@@ -2,7 +2,8 @@
 #  Authored by John Gresl 2015  #
 # ##                         ## #
 import os
-
+import time
+from libs.jtools import tokenize_str,print_tokenized
 
 DETECTION_IMAGE = "FullMaps/gs_f160w_cropcal.fits"
 
@@ -30,57 +31,48 @@ ZP_f775w = 23.9
 ZP_f850l = 23.9
 
 
-def run():
-
-    print("\n" + "="*80)
-    print("If you get a \"sextractor not found\" error, then the program will" +
-          "automatically try using the \"sex\" command instead.")
-
-    # f125w
-    print('---f125w---')
-    os.system("sextractor -c SExtractorConfig/f125w.sex {} FullMaps/gs_f125w_cropcal.fits -MAG_ZEROPOINT {}"
-              .format(DETECTION_IMAGE, ZP_f125w) +
-              "|| sex -c SExtractorConfig/f125w.sex {} FullMaps/gs_f125w_cropcal.fits -MAG_ZEROPOINT {}"
-              .format(DETECTION_IMAGE, ZP_f125w))
-    print('\tCatalog written to {}'.format(os.getcwd()+'/Catalogs/gs_f125w_cropcal.cat'))
-
-    # f160w
-    print('---f160w---')
-    os.system("sextractor -c SExtractorConfig/f160w.sex {} FullMaps/gs_f160w_cropcal.fits -MAG_ZEROPOINT {}"
-              .format(DETECTION_IMAGE, ZP_f160w) +
-              "|| sex -c SExtractorConfig/f160w.sex {} FullMaps/gs_f160w_cropcal.fits -MAG_ZEROPOINT {}"
-              .format(DETECTION_IMAGE, ZP_f160w))
-    print('\tCatalog written to {}'.format(os.getcwd()+'/Catalogs/gs_f160w_cropcal.cat'))
-
-    # f435w
-    print("---f435w---")
-    os.system("sextractor -c SExtractorConfig/f435w.sex {} FullMaps/gs_f435w_cropcal.fits -MAG_ZEROPOINT {}"
-              .format(DETECTION_IMAGE, ZP_f435w) +
-              "|| sex -c SExtractorConfig/f435w.sex {} FullMaps/gs_f435w_cropcal.fits -MAG_ZEROPOINT {}"
-              .format(DETECTION_IMAGE, ZP_f435w))
-    print('\tCatalog written to {}'.format(os.getcwd()+'/Catalogs/gs_f435w_cropcal.cat'))
-
-    # f606w
-    print('---f606w---')
-    os.system("sextractor -c SExtractorConfig/f606w.sex {} FullMaps/gs_f606w_cropcal.fits -MAG_ZEROPOINT {}"
-              .format(DETECTION_IMAGE, ZP_f606w) +
-              "|| sex -c SExtractorConfig/f606w.sex {} FullMaps/gs_f606w_cropcal.fits -MAG_ZEROPOINT {}"
-              .format(DETECTION_IMAGE, ZP_f606w))
-    print('\tCatalog written to {}'.format(os.getcwd()+'/Catalogs/gs_f606w_cropcal.cat'))
-
-    # f775w
-    print('---f775w---')
-    os.system("sextractor -c SExtractorConfig/f775w.sex {} FullMaps/gs_f775w_cropcal.fits -MAG_ZEROPOINT {}"
-              .format(DETECTION_IMAGE, ZP_f775w) +
-              "|| sex -c SExtractorConfig/f775w.sex {} FullMaps/gs_f775w_cropcal.fits -MAG_ZEROPOINT {}"
-              .format(DETECTION_IMAGE, ZP_f775w))
-    print('\tCatalog written to {}'.format(os.getcwd()+'/Catalogs/gs_f775w_cropcal.cat'))
-
-    # f850l
-    print('---f850l---')
-    os.system("sextractor -c SExtractorConfig/f850l.sex {} FullMaps/gs_f850l_cropcal.fits -MAG_ZEROPOINT {}"
-              .format(DETECTION_IMAGE, ZP_f850l) +
-              "|| sex -c SExtractorConfig/f850l.sex {} FullMaps/gs_f850l_cropcal.fits -MAG_ZEROPOINT {}"
-              .format(DETECTION_IMAGE, ZP_f850l))
-    print('\tCatalog written to {}'.format(os.getcwd()+'/Catalogs/gs_f850l_cropcal.cat'))
+def _sextractor(filter_name,zp,sex_args = ""):
+    print("  \n#SExtracting FullMaps/gs_{}_cropcal.fits".format(filter_name))
+    t1 = time.time()
+    sex_str = "sextractor {1} FullMaps/gs_{0}_cropcal.fits -c SExtractorConfig/default.sex {3} -MAG_ZEROPOINT {2}" +\
+           "|| sex -c default.sex {1} FullMaps/gs_{0}_cropcal.fits {3} -MAG_ZEROPOINT {2}"
+    command = sex_str.format(filter_name,DETECTION_IMAGE,zp,sex_args)
+    if filter_name == "f435w":
+        command = command.replace("MAP_RMS","NONE")
+    print_tokenized(*tokenize_str(command[command.find(" "):command.find("||")]),start="     -")
+    os.system(command)
+    t2 = time.time()
+    if "MAP_RMS" in command:
+        print("  #Catalog written to {}/Catalogs/RMS/gs_{}_cropcal.cat".format(os.getcwd(),filter_name))
+    else:
+        print("  #Catalog written to {}/Catalogs/NONE/gs_{}_cropcal.cat".format(os.getcwd(),filter_name))
+    print("  #Time Elapsed: {:.2f} seconds".format(t2-t1))
     return
+
+
+def run(rms):
+    #rms is either True or False, and tells us whether to use RMS maps or not
+    t1 = time.time()
+    filters = ["f125w","f160w","f435w","f606w","f775w","f850l"]
+    _sex_args = "-CATALOG_NAME Catalogs/{}/gs_{}_cropcal.cat " + \
+                "-WEIGHT_TYPE {} -WEIGHT_IMAGE FullRMSMaps/gs_{}_rms.fits"
+    if rms:
+        _sex_args = _sex_args.format("RMS","{0}","MAP_RMS","{0}")
+    else:
+        _sex_args = _sex_args.format("NONE","{0}","NONE","{0}")
+    print("\n" + "="*80)
+    print("="*26+"Now Running Source Extractor"+"="*26)
+    print("="*80 + "\n")
+    print("If you get a \"sextractor not found\" error, then the program will" +
+          "automatically\ntry using the \"sex\" command instead.")
+    for f in filters:
+        sex_args = _sex_args.format(f)
+        _sextractor(f,eval("ZP_{}".format(f)),sex_args)
+    t2 = time.time()
+
+    print("#Total Time Elapsed: {:.2f}".format(t2-t1))
+    return
+
+
+if __name__ == '__main__':
+    run(True)

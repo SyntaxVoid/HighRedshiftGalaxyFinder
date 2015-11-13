@@ -25,6 +25,19 @@ def check_list_type(lst, wanted_type):
                             .format(wanted_type, n, type(i)))
     return
 
+def tokenize_str(s):
+    arguments = s.split("-")[1:]
+    names = [ ]
+    values= [ ]
+    for arg in arguments:
+        names.append(arg.split()[0])
+        values.append(arg.split()[1])
+    return [names,values]
+
+def print_tokenized(names,values,start):
+    for n,v in zip(names,values):
+        print("{} {:20s} {:20s}".format(start,n,v))
+    return
 
 def list_operate(x1, x2, operation):
     # Returns a list corresponding to the x1 'operation' x2. (for example, x1 + x2)

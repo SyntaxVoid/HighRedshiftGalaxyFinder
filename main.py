@@ -18,6 +18,19 @@ import SelectionCriteria
 
 # My color - Candels Color (Use V-I and I-Z as color) as a function of H-band magnitude
 
+'''
+all bands
+plot match candels (i) vs ketrons (i)
+
+then subtract candels from our fits image
+
+plot candels (i) from THEIR cat vs candels (i) from MY cat
+
+
+'''
+
+
+
 
 # ADJUSTED ZERO POINTS (ZP for uJy is 23.9)
 ZP_f125w = 23.9#+0.0
@@ -58,8 +71,9 @@ header = '''#   1 NUMBER                 Running object number                  
 
 if __name__ == '__main__':
     EXPOSURE       = 0  # Compiles the RMS maps from the EXPOSURE maps
+    USE_RMS        = 1
     FITS           = 0  # Compiles Fits Files
-    CATS           = 0  # Creates catalogs using SExtractor
+    CATS           = 1  # Creates catalogs using SExtractor
     ERRORS         = 0  # Plot the errors in magnitude vs a private Candels catalog
     SELECT_ME      = 0  # Runs through our master catalog and applies selection criteria
     COLOR_COLOR_ME = 0  # Makes color-color plots. SELECT must be True
@@ -78,13 +92,19 @@ if __name__ == '__main__':
 
     if CATS:
         print('. . .Compiling Catalogs. . .')
-        CatCompile.run()
-        libs.jastro.combine_catalogs(header,
-                                     sorted(['Catalogs/'+ f for f in os.listdir('Catalogs/')]),[2,3,4,5,6,7],8,
-                                     "master.cat",
-                                     conversion_factor = 1)
+        CatCompile.run(USE_RMS)
+        if USE_RMS:
+            libs.jastro.combine_catalogs(header,
+                                         sorted(['Catalogs/RMS/'+ f for f in os.listdir('Catalogs/RMS/')]),[2,3,4,5,6,7],8,
+                                         "master.cat",
+                                         conversion_factor = 1)
+        else:
+            libs.jastro.combine_catalogs(header,
+                                         sorted(['Catalogs/NONE/'+ f for f in os.listdir('Catalogs/NONE/')]),[2,3,4,5,6,7],8,
+                                         "master.cat",
+                                         conversion_factor = 1)
 
-        print('-'*28)
+        print(("="*80 + "\n")*3)
     if ERRORS:
         FLUX_OR_MAG = 'flux'
         print('. . .Compiling Magnitudes and Errors. . .')
@@ -396,15 +416,15 @@ if __name__ == '__main__':
 
         matplotlib.pyplot.figure()
         matplotlib.pyplot.plot(my_h_vi,del_vi,'r.')
-        matplotlib.pyplot.xlabel('My Colors - Candels Colors (V-I)')
-        matplotlib.pyplot.ylabel('H160 magnitude')
+        matplotlib.pyplot.ylabel('My Colors - Candels Colors (V-I)')
+        matplotlib.pyplot.xlabel('H160 magnitude')
         matplotlib.pyplot.title('Difference in Colors \nMy(V-I)-Candels(V-I) vs H160 Magnitude')
         matplotlib.pyplot.grid(True)
 
         matplotlib.pyplot.figure()
         matplotlib.pyplot.plot(my_h_iz,del_iz,'r.')
-        matplotlib.pyplot.xlabel('My Colors - Candels Colors (I-Z)')
-        matplotlib.pyplot.ylabel('H160 magnitude')
+        matplotlib.pyplot.ylabel('My Colors - Candels Colors (I-Z)')
+        matplotlib.pyplot.xlabel('H160 magnitude')
         matplotlib.pyplot.title('Difference in Colors \nMy(I-Z)-Candels(I-Z) vs H160 Magnitude')
         matplotlib.pyplot.grid(True)
 
