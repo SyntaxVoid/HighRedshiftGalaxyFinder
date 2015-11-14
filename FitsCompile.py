@@ -2,21 +2,22 @@
 #  Authored by John Gresl 2015  #
 # ##                         ## #
 
+import pyfits
 
 import libs.jastro
-import pyfits
+from GLOBALS import *
 
 C = 299792458.  # speed of light m/s
 CONVERSION = 46117.647060 * pow(10,6)
 
-# To convert nW . m^-2 . sr^-1 to Jy
+# To convert nW . m^-2 . sr^-1 to uJy
 #
 #  nW    1      1 W             1 sr             (0.14 arcsec)^2      1         1 Jy                10^6 uJy
 # --- x --- x ------- x -------------------  x  ------------------ x --- x -------------------  x  ----------
 # m^2    sr   10^9 nW   4.25*10^10 arcsec^2        (1 pixel)^2        f    10^-26 W.m^-2.Hz^-1        1 Jy
 #
 #                     1
-# = 46117.640760  x  --- Jy
+# = 46117640760  x   --- uJy
 #                     f
 
 f0 = 'HalfMaps/gs_f125w_half1_cropcal.fits'
@@ -49,9 +50,9 @@ def run():
     print("\n" + "="*80)
     print("="*27 + "Now Compiling .fits Images" + "="*27)
     print("="*80 + "\n")
-    filters = ["f125w","f160w","f435w","f606w","f775w","f850l"]
+
     file_str = "HalfMaps/gs_{0}_half{1}_cropcal.fits"
-    for f in filters:
+    for f in FILTERS:
         print("#Compiling FullMaps/gs_{}_cropcal.fits".format(f))
         if f != "f435w":
             libs.jastro.fits_add([file_str.format(f,"1"),file_str.format(f,"2")],

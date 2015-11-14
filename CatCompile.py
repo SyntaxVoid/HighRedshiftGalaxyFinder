@@ -4,6 +4,7 @@
 import os
 import time
 from libs.jtools import tokenize_str,print_tokenized
+from GLOBALS import *
 
 
 
@@ -23,12 +24,7 @@ from libs.jtools import tokenize_str,print_tokenized
 
 # Every map except for 435 is in the units of uJy which has a defined ZP as 23.9.
 # The ZP for 435 was calculated from http://www.stsci.edu/hst/acs/analysis/zeropoints/zpt.py
-ZP_f125w = 23.9
-ZP_f160w = 23.9
-ZP_f435w = 25.665
-ZP_f606w = 23.9
-ZP_f775w = 23.9
-ZP_f850l = 23.9
+
 
 
 DETECTION_IMAGE = "FullMaps/gs_f160w_cropcal.fits"
@@ -56,7 +52,6 @@ def _sextractor(filter_name,zp,sex_args = ""):
 def run(rms=False):
     #rms is either True or False, and tells us whether to use RMS maps or not
     t1 = time.time()
-    filters = ["f125w","f160w","f435w","f606w","f775w","f850l"]
     _sex_args = "-CATALOG_NAME Catalogs/{}/gs_{}_cropcal.cat " + \
                 "-WEIGHT_TYPE {} -WEIGHT_IMAGE FullRMSMaps/gs_{}_rms.fits"
     if rms:
@@ -68,12 +63,13 @@ def run(rms=False):
     print("="*80 + "\n")
     print("If you get a \"sextractor not found\" error, then the program will" +
           "automatically\ntry using the \"sex\" command instead.")
-    for f in filters:
+    for f in FILTERS:
         sex_args = _sex_args.format(f)
         _sextractor(f,eval("ZP_{}".format(f)),sex_args)
     t2 = time.time()
 
     print("#Total Time Elapsed: {:.2f}".format(t2-t1))
+    print("\n" + ("="*80 + "\n")*3)
     return
 
 

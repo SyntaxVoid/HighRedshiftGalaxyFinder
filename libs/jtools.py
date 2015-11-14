@@ -1,9 +1,9 @@
 # ##                         ## #
 #  Authored by John Gresl 2015  #
 # ##                         ## #
-
-import os
 import sys
+sys.dont_write_bytecode = True
+import os
 
 
 class ListSizeMismatch(Exception):

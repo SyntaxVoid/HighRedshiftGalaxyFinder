@@ -5,6 +5,7 @@ sys.dont_write_bytecode = True
 
 import os
 cwd = os.getcwd()
+import time
 import matplotlib.pyplot
 from matplotlib.pyplot import show
 
@@ -14,7 +15,10 @@ import libs.jtools
 import RMSCompile
 import FitsCompile
 import CatCompile
+import MagErrors
 import SelectionCriteria
+
+from GLOBALS import *
 
 # My color - Candels Color (Use V-I and I-Z as color) as a function of H-band magnitude
 
@@ -28,17 +32,6 @@ plot candels (i) from THEIR cat vs candels (i) from MY cat
 
 
 '''
-
-
-
-
-# ADJUSTED ZERO POINTS (ZP for uJy is 23.9)
-ZP_f125w = 23.9#+0.0
-ZP_f160w = 23.9#+0.0
-ZP_f435w = 23.9#+2.2
-ZP_f606w = 23.9#+1.8
-ZP_f775w = 23.9#+1.9
-ZP_f850l = 23.9#+1.7
 
 header = '''#   1 NUMBER                 Running object number                                      [count]
 #   2 ALPHA_J2000            Right ascension of barycenter (J2000)                      [deg]
@@ -70,11 +63,12 @@ header = '''#   1 NUMBER                 Running object number                  
 '''
 
 if __name__ == '__main__':
-    EXPOSURE       = 0  # Compiles the RMS maps from the EXPOSURE maps
-    FITS           = 0  # Compiles Fits Files
-    USE_RMS        = 0
-    USE_NONE       = 0
-    CATS           = 0  # Creates catalogs using SExtractor
+    t1 = time.time()
+    EXPOSURE       = 1  # Compiles the RMS maps from the EXPOSURE maps
+    FITS           = 1  # Compiles Fits Files
+    USE_RMS        = 1
+    USE_NONE       = 1
+    CATS           = 1  # Creates catalogs using SExtractor
     ERRORS         = 0  # Plot the errors in magnitude vs a private Candels catalog
     SELECT_ME      = 0  # Runs through our master catalog and applies selection criteria
     COLOR_COLOR_ME = 0  # Makes color-color plots. SELECT must be True
@@ -93,40 +87,12 @@ if __name__ == '__main__':
         print('. . .Compiling Catalogs. . .')
         if USE_RMS:
             CatCompile.run(True)
-            libs.jastro.combine_catalogs(header,
-                                         sorted(['Catalogs/RMS/'+ f for f in os.listdir('Catalogs/RMS/')]),[2,3,4,5,6,7],8,
-                                         "master.cat",
-                                         conversion_factor = 1)
+            libs.jastro.combine_catalogs(header,sorted(['Catalogs/RMS/'+ f for f in os.listdir('Catalogs/RMS/')]),[2,3,4,5,6,7],8,"master.cat",conversion_factor = 1)
         if USE_NONE:
             CatCompile.run(False)
-            libs.jastro.combine_catalogs(header,
-                                         sorted(['Catalogs/NONE/'+ f for f in os.listdir('Catalogs/NONE/')]),[2,3,4,5,6,7],8,
-                                         "master.cat",
-                                         conversion_factor = 1)
-
-        print(("="*80 + "\n")*3)
+            libs.jastro.combine_catalogs(header,sorted(['Catalogs/NONE/'+ f for f in os.listdir('Catalogs/NONE/')]),[2,3,4,5,6,7],8,"master.cat",conversion_factor = 1)
     if ERRORS:
-        FLUX_OR_MAG = 'flux'
-        print('. . .Compiling Magnitudes and Errors. . .')
-
-        print("\n"+"="*10+"F125W Magnitude Errors"+"="*10)
-        libs.jastro.mag_errors('Matches/Cats/Matched_f125w.cat',FLUX_OR_MAG,4,42,2,ZP_f125w,['stats','plot'])
-
-        print("\n"+"="*10+"F160W Magnitude Errors"+"="*10)
-        libs.jastro.mag_errors('Matches/Cats/Matched_f160w.cat',FLUX_OR_MAG,4,45,2,ZP_f160w,['stats','plot'])
-
-        print("\n"+"="*10+"F435W Magnitude Errors"+"="*10)
-        libs.jastro.mag_errors('Matches/Cats/Matched_f435w.cat',FLUX_OR_MAG,4,21,2,ZP_f160w,['stats','plot'])
-
-        print("\n"+"="*10+"F606W Magnitude Errors"+"="*10)
-        libs.jastro.mag_errors('Matches/Cats/Matched_f606w.cat',FLUX_OR_MAG,4,24,2,ZP_f606w,['stats','plot'])
-
-        print("\n"+"="*10+"F775W Magnitude Errors"+"="*10)
-        libs.jastro.mag_errors('Matches/Cats/Matched_f775w.cat',FLUX_OR_MAG,4,27,2,ZP_f775w,['stats','plot'])
-
-        print("\n"+"="*10+"F850L Magnitude Errors"+"="*10)
-        libs.jastro.mag_errors('Matches/Cats/Matched_f850l.cat',FLUX_OR_MAG,4,33,2,ZP_f850l,['stats','plot'])
-        show() # To stop the windows from immediately being closed at end of script
+        MagErrors.run()
 
     if SELECT_ME:
         print("\n" + "="*80)
@@ -429,3 +395,7 @@ if __name__ == '__main__':
         matplotlib.pyplot.grid(True)
 
         matplotlib.pyplot.show()
+
+
+    t2 = time.time()
+    print("\n##Total time elapsed in main.py: {:.2f} seconds".format(t2-t1))

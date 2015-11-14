@@ -1,4 +1,5 @@
 import sys
+sys.dont_write_bytecode = True
 import pyfits
 import numpy
 import math
@@ -68,58 +69,33 @@ def color_color(data_sets, xaxis, yaxis, title,
     matplotlib.pyplot.show(block = False if graphall=='yes' else True)
     return
 
-
-def mag_errors(matched_catalog,
-               flux_or_mag,
-               my_data_column,
-               public_flux_column,
-               data_start,
-               zp=23.9,
-               options=None):
-    if flux_or_mag == 'flux':
-        my_flux_ujy = param_get(matched_catalog, [my_data_column], data_start)[0]
-        #my_flux_ujy = [x * pow(10, 6) for x in my_flux_jy]
-        my_mag = flux_list2mag(my_flux_ujy)
-    elif flux_or_mag == 'mag':
-        my_mag = param_get(matched_catalog, [my_data_column], data_start)[0]
-    else:
-        raise ValueError('Expected flux_or_mag to be either \'flux\' or \'mag\'')
-
-    public_flux = param_get(matched_catalog, [public_flux_column], data_start)[0]
-    public_mag = flux_list2mag(public_flux, zp)
-
-    deltas = []
-    my_mag_out = []
-    public_mag_out = []
-
-    for a, b in zip(my_mag, public_mag):
-        if any([a == 99., b == 99.]):
+def mag_errors(matched_catalog,myF,pubF,data_begin=1,zp=23.9):
+    [myF_uJy,pubF_uJy] = param_get(matched_catalog,[myF,pubF],data_begin)
+    myM = flux_list2mag(myF_uJy,zp)
+    pubM= flux_list2mag(pubF_uJy,zp)
+    deltas   = []
+    myM_out  = []
+    pubM_out = []
+    for m,p in zip(myM,pubM):
+        if m > 90 or p > 90:
             continue
         else:
-            deltas.append(a-b)
-            my_mag_out.append(a)
-            public_mag_out.append(b)
+            deltas.append(m-p)
+            myM_out.append(m)
+            pubM_out.append(p)
+    return [myM_out,pubM_out,deltas]
 
-    if options is None:
-        return [my_mag_out, public_mag_out, deltas]
-    if 'stats' in options:
-        sys.stdout.write("Std: "+str(numpy.std(deltas))+"\n")
-        sys.stdout.write("Avg: "+str(numpy.mean(deltas))+"\n")
-    if 'plot' in options:
-        title = matched_catalog.replace("Matches/Cats/Matched_", "")
-        title = title.replace(".cat", "").upper()
-        matplotlib.pyplot.figure()
-        matplotlib.pyplot.plot(my_mag_out, deltas, 'go')
-        # matplotlib.pyplot.plot(my_mag_out,public_mag_out,'go')
-        matplotlib.pyplot.grid(True, color='white')
-        matplotlib.pyplot.xlabel('My Magnitude')
-        matplotlib.pyplot.ylabel('My Magnitude - Public Magnitude')
-        # matplotlib.pyplot.ylabel('Public Magnitude')
-        ax = matplotlib.pyplot.gca()
-        ax.set_axis_bgcolor('black')
-        matplotlib.pyplot.title(title)
-        matplotlib.pyplot.show(block=False)
-    return [my_mag_out, public_mag_out, deltas]
+def plot_mag_errors(myM,deltas,title="",xlabel="",ylabel=""):
+    fig = matplotlib.pyplot.figure()
+    matplotlib.pyplot.plot(myM,deltas,'go')
+    matplotlib.pyplot.grid(True,color='white')
+    matplotlib.pyplot.xlabel(xlabel)
+    matplotlib.pyplot.ylabel(ylabel)
+    axes = matplotlib.pyplot.gca()
+    axes.set_axis_bgcolor('black')
+    matplotlib.pyplot.title(title)
+    matplotlib.pyplot.show(block=False)
+    return
 
 
 def combine_catalogs(header, cats, columns, data_start, destination, conversion_factor=1):
