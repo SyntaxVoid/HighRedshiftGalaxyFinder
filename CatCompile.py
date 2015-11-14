@@ -5,7 +5,7 @@ import os
 import time
 from libs.jtools import tokenize_str,print_tokenized
 
-DETECTION_IMAGE = "FullMaps/gs_f160w_cropcal.fits"
+
 
 # ############################################################ #
 #                 Zero Points calculated from                  #
@@ -31,8 +31,11 @@ ZP_f775w = 23.9
 ZP_f850l = 23.9
 
 
+DETECTION_IMAGE = "FullMaps/gs_f160w_cropcal.fits"
+
+
 def _sextractor(filter_name,zp,sex_args = ""):
-    print("  \n#SExtracting FullMaps/gs_{}_cropcal.fits".format(filter_name))
+    print("\n#SExtracting FullMaps/gs_{}_cropcal.fits".format(filter_name))
     t1 = time.time()
     sex_str = "sextractor {1} FullMaps/gs_{0}_cropcal.fits -c SExtractorConfig/default.sex {3} -MAG_ZEROPOINT {2}" +\
            "|| sex -c default.sex {1} FullMaps/gs_{0}_cropcal.fits {3} -MAG_ZEROPOINT {2}"
@@ -50,7 +53,7 @@ def _sextractor(filter_name,zp,sex_args = ""):
     return
 
 
-def run(rms):
+def run(rms=False):
     #rms is either True or False, and tells us whether to use RMS maps or not
     t1 = time.time()
     filters = ["f125w","f160w","f435w","f606w","f775w","f850l"]
@@ -76,3 +79,4 @@ def run(rms):
 
 if __name__ == '__main__':
     run(True)
+    run(False)
