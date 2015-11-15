@@ -39,11 +39,11 @@ def tinker_factor(delta):
     return pow(10., delta/2.5)
 
 
-center_f125w = C/(12449.36*pow(10, -10)) * tinker_factor(0.0)
-center_f160w = C/(15405.16*pow(10, -10)) * tinker_factor(0.0)
-center_f606w = C/( 5917.7 *pow(10, -10)) * tinker_factor(1.8)
-center_f775w = C/( 7693.0 *pow(10, -10)) * tinker_factor(1.9)
-center_f850l = C/( 9145.2 *pow(10, -10)) * tinker_factor(1.7)
+center_f125w = C/(12449.36*pow(10, -10)) / tinker_factor(0.0)
+center_f160w = C/(15405.16*pow(10, -10)) / tinker_factor(0.0)
+center_f606w = C/( 5917.7 *pow(10, -10)) / tinker_factor(1.8)
+center_f775w = C/( 7693.0 *pow(10, -10)) / tinker_factor(1.9)
+center_f850l = C/( 9145.2 *pow(10, -10)) / tinker_factor(1.7)
 
 
 def run():

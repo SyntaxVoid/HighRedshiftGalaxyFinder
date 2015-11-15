@@ -1,0 +1,24 @@
+#########################################
+## Description of each image by number ##
+#########################################
+
+1. Plotted the magnitudes from Ketron's maps vs. Candel's magnitude
+   subtracted with Ketron's magnitudes. (Ketron's Magnitudes were 
+   calculated from SExtractors FLUX_AUTO and then converted to mag.
+   a. f125w
+   b. f160w
+   c. f435w
+   d. f606w
+   e. f775w
+   f. f850l
+
+2. Same as 1, except we first created a set of RMS maps from the
+   exposure time maps. We then ran SExtractor on Ketron's maps 
+   with the RMS maps for each filter.
+   a. f125w
+   b. f160w
+   c. f435w
+   d. f606w
+   e. f775w
+   f. f850l
+

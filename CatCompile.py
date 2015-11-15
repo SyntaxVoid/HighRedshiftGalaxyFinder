@@ -37,7 +37,8 @@ def _sextractor(filter_name,zp,sex_args = ""):
            "|| sex -c default.sex {1} FullMaps/gs_{0}_cropcal.fits {3} -MAG_ZEROPOINT {2}"
     command = sex_str.format(filter_name,DETECTION_IMAGE,zp,sex_args)
     if filter_name == "f435w":
-        command = command.replace("MAP_RMS","NONE")
+        command = command.replace(",MAP_RMS",",NONE")
+        command = command.replace(",FullRMSMaps/gs_f435w_rms.fits","")
     print_tokenized(*tokenize_str(command[command.find(" "):command.find("||")]),start="     -")
     os.system(command)
     t2 = time.time()
@@ -49,13 +50,13 @@ def _sextractor(filter_name,zp,sex_args = ""):
     return
 
 
-def run(rms=False):
+def run(rms):
     #rms is either True or False, and tells us whether to use RMS maps or not
     t1 = time.time()
     _sex_args = "-CATALOG_NAME Catalogs/{}/gs_{}_cropcal.cat " + \
-                "-WEIGHT_TYPE {} -WEIGHT_IMAGE FullRMSMaps/gs_{}_rms.fits"
+                "-WEIGHT_TYPE {} -WEIGHT_IMAGE FullRMSMaps/gs_f160w_rms.fits,FullRMSMaps/gs_{}_rms.fits"
     if rms:
-        _sex_args = _sex_args.format("RMS","{0}","MAP_RMS","{0}")
+        _sex_args = _sex_args.format("RMS","{0}","MAP_RMS,MAP_RMS","{0}")
     else:
         _sex_args = _sex_args.format("NONE","{0}","NONE","{0}")
     print("\n" + "="*80)
@@ -76,3 +77,4 @@ def run(rms=False):
 if __name__ == '__main__':
     run(True)
     run(False)
+    pass

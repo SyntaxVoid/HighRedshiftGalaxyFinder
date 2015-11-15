@@ -64,11 +64,11 @@ header = '''#   1 NUMBER                 Running object number                  
 
 if __name__ == '__main__':
     t1 = time.time()
-    EXPOSURE       = 1  # Compiles the RMS maps from the EXPOSURE maps
-    FITS           = 1  # Compiles Fits Files
-    USE_RMS        = 1
-    USE_NONE       = 1
-    CATS           = 1  # Creates catalogs using SExtractor
+    EXPOSURE       = 0  # Compiles the RMS maps from the EXPOSURE maps
+    FITS           = 0  # Compiles Fits Files
+    USE_RMS        = 0
+    USE_NONE       = 0
+    CATS           = 0  # Creates catalogs using SExtractor
     ERRORS         = 0  # Plot the errors in magnitude vs a private Candels catalog
     SELECT_ME      = 0  # Runs through our master catalog and applies selection criteria
     COLOR_COLOR_ME = 0  # Makes color-color plots. SELECT must be True
@@ -84,15 +84,15 @@ if __name__ == '__main__':
         FitsCompile.run()
 
     if CATS:
-        print('. . .Compiling Catalogs. . .')
         if USE_RMS:
             CatCompile.run(True)
-            libs.jastro.combine_catalogs(header,sorted(['Catalogs/RMS/'+ f for f in os.listdir('Catalogs/RMS/')]),[2,3,4,5,6,7],8,"master.cat",conversion_factor = 1)
+            libs.jastro.combine_catalogs(header,sorted(['Catalogs/RMS/'+ f for f in os.listdir('Catalogs/RMS/')]),[2,3,4,5,6,7],8,"masterRMS.cat",conversion_factor = 1)
         if USE_NONE:
             CatCompile.run(False)
-            libs.jastro.combine_catalogs(header,sorted(['Catalogs/NONE/'+ f for f in os.listdir('Catalogs/NONE/')]),[2,3,4,5,6,7],8,"master.cat",conversion_factor = 1)
+            libs.jastro.combine_catalogs(header,sorted(['Catalogs/NONE/'+ f for f in os.listdir('Catalogs/NONE/')]),[2,3,4,5,6,7],8,"masterNONE.cat",conversion_factor = 1)
     if ERRORS:
-        MagErrors.run()
+        MagErrors.run(False)
+        MagErrors.run(True)
 
     if SELECT_ME:
         print("\n" + "="*80)
