@@ -4,6 +4,7 @@
 import os
 import time
 from libs.jtools import tokenize_str,print_tokenized
+from libs.jastro import combine_catalogs
 from GLOBALS import *
 
 
@@ -67,6 +68,10 @@ def run(rms):
     for f in FILTERS:
         sex_args = _sex_args.format(f)
         _sextractor(f,eval("ZP_{}".format(f)),sex_args)
+    rms_or_none = "RMS" if rms else "NONE"
+    combine_catalogs(header,
+                     sorted(["Catalogs/{}/".format(rms_or_none) + f for f in os.listdir("Catalogs/{}/".format(rms_or_none))]),
+                     [2,3,4,5,6,7],8,"master{}.cat".format(rms_or_none),conversion_factor=1)
     t2 = time.time()
 
     print("#Total Time Elapsed: {:.2f}".format(t2-t1))

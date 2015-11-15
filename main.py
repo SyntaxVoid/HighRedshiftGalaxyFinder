@@ -1,14 +1,12 @@
 from __future__ import print_function
 import sys
 sys.dont_write_bytecode = True
-# The above stops the cluttering of source folder with .pyc files
 
 import os
 cwd = os.getcwd()
 import time
 import matplotlib.pyplot
 from matplotlib.pyplot import show
-
 
 import libs.jastro
 import libs.jtools
@@ -17,49 +15,14 @@ import FitsCompile
 import CatCompile
 import MagErrors
 import SelectionCriteria
-
 from GLOBALS import *
 
-# My color - Candels Color (Use V-I and I-Z as color) as a function of H-band magnitude
-
 '''
+ My color - Candels Color (Use V-I and I-Z as color) as a function of H-band magnitude
 all bands
 plot match candels (i) vs ketrons (i)
-
 then subtract candels from our fits image
-
 plot candels (i) from THEIR cat vs candels (i) from MY cat
-
-
-'''
-
-header = '''#   1 NUMBER                 Running object number                                      [count]
-#   2 ALPHA_J2000            Right ascension of barycenter (J2000)                      [deg]
-#   3 DELTA_J2000            Declination of barycenter (J2000)                          [deg]
-#   4 F125W_FLUX_AUTO        Flux within a Kron-like elliptical aperture                [uJy]
-#   5 F125W_FLUXERR_AUTO     RMS error for AUTO flux                                    [uJy]
-#   6 F125W_MAG_AUTO         Kron-like elliptical aperture magnitude                    [mag]
-#   7 F125W_MAGERR_AUTO      RMS error for AUTO magnitude                               [mag]
-#   8 F160W_FLUX_AUTO        Flux within a Kron-like elliptical aperture                [uJy]
-#   9 F160W_FLUXERR_AUTO     RMS error for AUTO flux                                    [uJy]
-#  10 F160W_MAG_AUTO         Kron-like elliptical aperture magnitude                    [mag]
-#  11 F160W_MAGERR_AUTO      RMS error for AUTO magnitude                               [mag]
-#  12 F435W_FLUX_AUTO        Flux within a Kron-like elliptical aperture                [uJy]
-#  13 F435W_FLUXERR_AUTO     RMS error for AUTO flux                                    [uJy]
-#  14 F435W_MAG_AUTO         Kron-like elliptical aperture magnitude                    [mag]
-#  15 F435W_MAGERR_AUTO      RMS error for AUTO magnitude                               [mag]
-#  16 F606W_FLUX_AUTO        Flux within a Kron-like elliptical aperture                [uJy]
-#  17 F606W_FLUXERR_AUTO     RMS error for AUTO flux                                    [uJy]
-#  18 F606W_MAG_AUTO         Kron-like elliptical aperture magnitude                    [mag]
-#  19 F606W_MAGERR_AUTO      RMS error for AUTO magnitude                               [mag]
-#  20 F775W_FLUX_AUTO        Flux within a Kron-like elliptical aperture                [uJy]
-#  21 F775W_FLUXERR_AUTO     RMS error for AUTO flux                                    [uJy]
-#  22 F775W_MAG_AUTO         Kron-like elliptical aperture magnitude                    [mag]
-#  23 F775_MAGERR_AUTO       RMS error for AUTO magnitude                               [mag]
-#  24 F850LP_FLUX_AUTO       Flux within a Kron-like elliptical aperture                [uJy]
-#  25 F850LP_FLUXERR_AUTO    RMS error for AUTO flux                                    [uJy]
-#  26 F850LP_MAG_AUTO        Kron-like elliptical aperture magnitude                    [mag]
-#  27 F850LP_MAGERR_AUTO     RMS error for AUTO magnitude                               [mag]
 '''
 
 if __name__ == '__main__':
@@ -68,7 +31,7 @@ if __name__ == '__main__':
     FITS           = 0  # Compiles Fits Files
     USE_RMS        = 0
     USE_NONE       = 0
-    CATS           = 0  # Creates catalogs using SExtractor
+    CATS           = 1  # Creates catalogs using SExtractor
     ERRORS         = 0  # Plot the errors in magnitude vs a private Candels catalog
     SELECT_ME      = 0  # Runs through our master catalog and applies selection criteria
     COLOR_COLOR_ME = 0  # Makes color-color plots. SELECT must be True
@@ -95,100 +58,10 @@ if __name__ == '__main__':
         MagErrors.run(True)
 
     if SELECT_ME:
-        print("\n" + "="*80)
-        num_params = header.count('\n')  # Length (in lines) of the header of the catalog
-        b435_cat_dir = "/SelectedObjects/Mine/b435.cat"
-        v606_cat_dir = "/SelectedObjects/Mine/v606.cat"
-        i775_cat_dir = "/SelectedObjects/Mine/i775.cat"
-        z7_cat_dir   = "/SelectedObjects/Mine/z7.cat"
-        z6_cat_dir   = "/SelectedObjects/Mine/z6.cat"
-        z5_cat_dir   = "/SelectedObjects/Mine/z5.cat"
-        z4_cat_dir   = "/SelectedObjects/Mine/z4.cat"
 
-        # Flux Values and Errors:
-        [j125F,h160F,b435F,v606F,i775F,z850F] = \
-            libs.jastro.param_get('master.cat',[4,8,12,16,20,24],28)
-        [b125Ferr,b160Ferr,b435Ferr,v606Ferr,i775Ferr,z850Ferr] = \
-            libs.jastro.param_get('master.cat',[5,9,13,17,21,25],28)
-        # Mag values
-        [j125M,h160M,b435M,v606M,i775M,z850M] = \
-            libs.jastro.param_get('master.cat',[6,10,14,18,22,26],28)
+        pass
 
-        # Will append the line of the master catalog to these lists if
-        # they meet the selection criteria.
-        b435_drops = []
-        v606_drops = []
-        i775_drops = []
-        z7 = []
-        z6 = []
-        z5 = []
-        z4 = []
-        z3 = []
-
-        # Notation: Bbv indicates the list corresponding to the B dropout with values of b_mags - v_mags
-        Bbv = []
-        Bvz = []
-
-        Vvi = []
-        Viz = []
-
-        Iiz = []
-        Ivz = []
-
-        with open('master.cat') as cat_data:
-            cat_lines = cat_data.readlines()
-            num_lines = len(cat_lines)-num_params
-            for i in range(num_lines):
-                # B435 Drops (Must wait for b435 data)
-                if SelectionCriteria.b435_dropout(b435M[i],v606M[i],i775M[i],z850M[i],
-                                                  (v606F[i]/v606Ferr[i]),(i775F[i]/i775Ferr[i])):
-                    b435_drops.append(cat_lines[i+num_params].split())
-                    Bbv.append(b435M[i]-v606M[i])
-                    Bvz.append(v606M[i]-z850M[i])
-
-                # V606 Drops (Must wait for b435 data)
-                if SelectionCriteria.v606_dropout(b435M[i],v606M[i],i775M[i],z850M[i],
-                                                    (z850F[i]/z850Ferr[i]),(b435F[i]/b435Ferr[i])):
-                    v606_drops.append(cat_lines[i+num_params].split())
-                    Vvi.append(v606M[i]-i775M[i])
-                    Viz.append(i775M[i]-z850M[i])
-
-        #         # I775 Drops
-                if SelectionCriteria.i775_dropout(v606M[i],i775M[i],z850M[i],
-                                                    (z850F[i]/z850Ferr[i]),(v606F[i]/v606Ferr[i]),i):
-                    i775_drops.append(cat_lines[num_params+i].split())
-                    Iiz.append(i775M[i]-z850M[i])
-                    Ivz.append(v606M[i]-z850M[i])
-
-                # We need to check backwords from Z~7 to Z~4 to make sure we don't double
-                # count any galaxies.
-                # z~7
-                elif SelectionCriteria.z7(j125M[i],j125M[i],h160M[i],i775M[i],z850M[i],
-                                          (b435F[i]/b435Ferr[i]),(v606F[i]/v606Ferr[i]),
-                                          (i775F[i]/i775Ferr[i]),(i775F[i]/i775Ferr[i])):
-                    z7.append(cat_lines[num_params+i].split())
-
-                #z~6
-                elif SelectionCriteria.z6(j125M[i],j125M[i],h160M[i],v606M[i],i775M[i],i775M[i],z850M[i],
-                                          b435F[i]/b435Ferr[i],v606F[i]/v606Ferr[i],i775F[i]/i775Ferr[i]):
-                    z6.append(cat_lines[num_params+i].split())
-
-                #z~5
-                elif SelectionCriteria.z5(h160M[i],v606M[i],i775M[i],z850M[i],b435F[i]/b435Ferr[i]):
-                    z5.append(cat_lines[num_params+i].split())
-
-                #z~4
-                elif SelectionCriteria.z4(j125M[i],b435M[i],v606M[i],i775M[i]):
-                    z4.append(cat_lines[num_params+i].split())
-        libs.jtools.write_table(b435_drops,header,cwd + b435_cat_dir,"B435 Drops","4<=z<=6",verbose=True)
-        libs.jtools.write_table(v606_drops,header,cwd + v606_cat_dir,"V606 Drops","4<=z<=6",verbose=True)
-        libs.jtools.write_table(i775_drops,header,cwd + i775_cat_dir,"I775 Drops","4<=z<=6",verbose=True)
-        libs.jtools.write_table(z4,header,cwd + z4_cat_dir,"Z~4","Z~4",verbose=True)
-        libs.jtools.write_table(z5,header,cwd + z5_cat_dir,"Z~5","Z~5",verbose=True)
-        libs.jtools.write_table(z6,header,cwd + z6_cat_dir,"Z~6","Z~6",verbose=True)
-        libs.jtools.write_table(z7,header,cwd + z7_cat_dir,"Z~7","Z~7",verbose=True)
-
-        if COLOR_COLOR_ME:
+    if COLOR_COLOR_ME:
             B_colors = [[Bvz,Bbv]]
             V_colors = [[Viz,Vvi]]
             I_colors = [[Ivz,Iiz]]
