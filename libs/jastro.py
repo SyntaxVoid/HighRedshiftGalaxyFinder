@@ -46,7 +46,7 @@ def color_color(data_sets, xaxis, yaxis, title,
                 xlim=[-1,4], ylim=[-1,7],
                 xthresh=None, ythresh=None, a=None, b=None,
                 graphall = 'no'):
-    graph_colors = ['ro','go','bo','mo']
+    graph_colors = ['go','ro','bo','mo']
     n = len(data_sets)
     matplotlib.pyplot.figure()
     for (n,ds) in enumerate(data_sets):

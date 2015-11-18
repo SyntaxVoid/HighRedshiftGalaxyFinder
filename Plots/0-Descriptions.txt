@@ -22,3 +22,12 @@
    e. f775w
    f. f850l
 
+3. Color-Color plots for B-drops and V-drops. The top two were created
+   without using an RMS map while the bottom two were created with the
+   RMS maps. We can see that much of the noise is reduced with the use
+   of the RMS map.
+   3a. Color-Color plot of B-drops with no RMS map.   (6564 Selections out of 13900 Sources)
+   3b. Color-Color plot of V-drops with no RMS map.   ( 117 Selections out of 13900 Sources)
+   3c. Color-Color plot of B-drops with RMS map.      (1772 Selections out of  5028 Sources)
+   3d. Color-Color plot of V-drops with RMS map.      (  28 Selections out of  5028 Sources)
+

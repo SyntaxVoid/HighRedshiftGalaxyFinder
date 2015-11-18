@@ -1,0 +1,34 @@
+#   1 NUMBER                 Running object number                                      [count]
+#   2 ALPHA_J2000            Right ascension of barycenter (J2000)                      [deg]
+#   3 DELTA_J2000            Declination of barycenter (J2000)                          [deg]
+#   4 F125W_FLUX_AUTO        Flux within a Kron-like elliptical aperture                [uJy]
+#   5 F125W_FLUXERR_AUTO     RMS error for AUTO flux                                    [uJy]
+#   6 F125W_MAG_AUTO         Kron-like elliptical aperture magnitude                    [mag]
+#   7 F125W_MAGERR_AUTO      RMS error for AUTO magnitude                               [mag]
+#   8 F160W_FLUX_AUTO        Flux within a Kron-like elliptical aperture                [uJy]
+#   9 F160W_FLUXERR_AUTO     RMS error for AUTO flux                                    [uJy]
+#  10 F160W_MAG_AUTO         Kron-like elliptical aperture magnitude                    [mag]
+#  11 F160W_MAGERR_AUTO      RMS error for AUTO magnitude                               [mag]
+#  12 F435W_FLUX_AUTO        Flux within a Kron-like elliptical aperture                [uJy]
+#  13 F435W_FLUXERR_AUTO     RMS error for AUTO flux                                    [uJy]
+#  14 F435W_MAG_AUTO         Kron-like elliptical aperture magnitude                    [mag]
+#  15 F435W_MAGERR_AUTO      RMS error for AUTO magnitude                               [mag]
+#  16 F606W_FLUX_AUTO        Flux within a Kron-like elliptical aperture                [uJy]
+#  17 F606W_FLUXERR_AUTO     RMS error for AUTO flux                                    [uJy]
+#  18 F606W_MAG_AUTO         Kron-like elliptical aperture magnitude                    [mag]
+#  19 F606W_MAGERR_AUTO      RMS error for AUTO magnitude                               [mag]
+#  20 F775W_FLUX_AUTO        Flux within a Kron-like elliptical aperture                [uJy]
+#  21 F775W_FLUXERR_AUTO     RMS error for AUTO flux                                    [uJy]
+#  22 F775W_MAG_AUTO         Kron-like elliptical aperture magnitude                    [mag]
+#  23 F775_MAGERR_AUTO       RMS error for AUTO magnitude                               [mag]
+#  24 F850LP_FLUX_AUTO       Flux within a Kron-like elliptical aperture                [uJy]
+#  25 F850LP_FLUXERR_AUTO    RMS error for AUTO flux                                    [uJy]
+#  26 F850LP_MAG_AUTO        Kron-like elliptical aperture magnitude                    [mag]
+#  27 F850LP_MAGERR_AUTO     RMS error for AUTO magnitude                               [mag]
+   6709      53.1174453       -27.8052216      0.1187078        0.01414106       26.2138          0.1294           0.1656633        0.01837166       25.8519          0.1204           -0.008140463     0.01001089       99.0             99.0             0.02586792       0.01468233       27.8681          0.6164           0.04863788       0.03661732       27.1826          0.8176           0.2255147        0.04158238       25.5171          0.2002         
+   7318      53.0741017       -27.8038165      0.3485574        0.02787349       25.0443          0.0868           0.3123026        0.03621243       25.1636          0.1259           0.03651684       0.0197325        29.2588          0.5868           0.05095784       0.02894038       27.132           0.6168           0.1314272        0.07217649       26.1033          0.5964           0.4293295        0.08196314       24.818           0.2073         
+   11176     53.0740186       -27.7323585      0.07581045       0.01330497       26.7007          0.1906           0.1097804        0.01728544       26.2987          0.171            -0.0122179       0.009419         99.0             99.0             0.01796973       0.01381424       28.2636          0.8349           0.001359761      0.03445232       31.0663          27.516           0.05223319       0.03912382       27.1051          0.8134         
+   11445     53.0734117       -27.7086578      0.0542932        0.009916942      27.0631          0.1984           0.1145896        0.0128838        26.2521          0.1221           0.01117798       0.007020508      30.5441          0.6821           0.005407024      0.01029652       29.5676          2.0681           0.01016715       0.02567925       28.882           2.7429           0.1070495        0.02916118       26.326           0.2958         
+   11576     53.1768085       -27.6922009      0.2475694        0.0166927        25.4158          0.0732           0.237093         0.02168667       25.4627          0.0993           -0.003127318     0.01181728       99.0             99.0             0.02647104       0.01733163       27.8431          0.711            0.02302562       0.04322461       27.9945          2.0387           0.1570484        0.04908557       25.9099          0.3394         
+   12329     53.0475875       -27.7215751      0.1215622        0.01055739       26.188           0.0943           0.1039029        0.01371586       26.3584          0.1434           0.003404815      0.007473902      31.8348          2.3839           0.01773665       0.01096149       28.2778          0.6712           0.01092269       0.02733764       28.8042          2.7181           0.105595         0.03104444       26.3409          0.3193         
+   13784     53.1372441       -27.6788588      0.2557195        0.02919469       25.3806          0.124            0.2892489        0.03792889       25.2468          0.1424           0.01359824       0.02066782       30.3313          1.6506           0.02579916       0.03031215       27.871           1.276            0.02702417       0.07559765       27.8206          3.038            0.4372034        0.08584817       24.7983          0.2132         
