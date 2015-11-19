@@ -31,3 +31,14 @@
    3c. Color-Color plot of B-drops with RMS map.      (1772 Selections out of  5028 Sources)
    3d. Color-Color plot of V-drops with RMS map.      (  28 Selections out of  5028 Sources)
 
+4. We looked at the color differences between our maps and Candels maps
+   and then plotted the color differences against the H-band (f160w)
+   magnitude. As expected, we see scattering as the magnitude increases.
+   4a. My (V-I) color minus Candels (V-I) color plotted against H-band mag.
+       Did not include RMS maps.
+   4b. My (V-I) color minus Candels (V-I) color plotted against H-band mag.
+       Did include RMS maps.
+   4c. My (I-Z) color minus Candels (I-Z) color plotted against H-band mag.
+       Did not include RMS maps.
+   4d. My (I-Z) color minus Candels (I-Z) color plotted against H-band mag.
+       Did include RMS maps.

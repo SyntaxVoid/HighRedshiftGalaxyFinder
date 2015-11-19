@@ -8,7 +8,7 @@ def stats(drop,name,num_obj,lst):
     print("   #{:5d} objects out of {:5d} met the {:4s} dropout criteria from {}".format(len(lst),num_obj,drop,name))
 
 
-def run(catalog,destination,col_dict,rms):
+def run(catalog,destination,header,col_dict,rms):
     print("\n" + "="*80)
     print("="*25 + "Now applying Selection Criteria"+ "="*24)
     print("="*80 + "\n")
@@ -52,6 +52,6 @@ def run(catalog,destination,col_dict,rms):
 
 
 if __name__ == '__main__':
-    #run("masterNONE.cat","SelectedObjects/Mine/NONE/",MASTER_COL_DICT,False)
-    #run("masterRMS.cat","SelectedObjects/Mine/RMS/",MASTER_COL_DICT,True)
-    run("Candels_Catalog/CANDELS.GOODSS.F160W.v1_1.photom.cat","SelectedObjects/Candels/",MASTER_CANDELS_DICT,False)
+    run("masterNONE.cat","SelectedObjects/Mine/",header,MASTER_COL_DICT,False)
+    run("masterRMS.cat","SelectedObjects/Mine/",header,MASTER_COL_DICT,True)
+    run("Candels_Catalog/CANDELS.GOODSS.F160W.v1_1.photom.cat","SelectedObjects/Candels/",candels_header,MASTER_CANDELS_DICT,False)

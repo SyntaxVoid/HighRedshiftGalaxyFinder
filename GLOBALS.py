@@ -27,12 +27,20 @@ MASTER_CANDELS_DICT = {"Number": 0, "IAU_Name": 1, "RA": 2, "ALPHA_J2000": 2,"DE
                        "F160W_FLUX": 37, "F160W_FLUXERR": 38, "F160W_WEIGHT": 39}
 
 
-COLOR_COLOR_OPS = {"b435": [[MASTER_COL_DICT["F435W_MAG"],MASTER_COL_DICT["F606W_MAG"]],
-                            [MASTER_COL_DICT["F606W_MAG"],MASTER_COL_DICT["F850L_MAG"]]],
-                   "v606": [[MASTER_COL_DICT["F606W_MAG"],MASTER_COL_DICT["F775W_MAG"]],
-                            [MASTER_COL_DICT["F775W_MAG"],MASTER_COL_DICT["F850L_MAG"]]],
-                   "i775": [[MASTER_COL_DICT["F606W_MAG"],MASTER_COL_DICT["F850L_MAG"]],
-                            [MASTER_COL_DICT["F775W_MAG"],MASTER_COL_DICT["F850L_MAG"]]]}
+MY_COLOR_COLOR_OPS = {"b435": [[MASTER_COL_DICT["F435W_MAG"],MASTER_COL_DICT["F606W_MAG"]],
+                              [MASTER_COL_DICT["F606W_MAG"],MASTER_COL_DICT["F850L_MAG"]]],
+                     "v606": [[MASTER_COL_DICT["F606W_MAG"],MASTER_COL_DICT["F775W_MAG"]],
+                              [MASTER_COL_DICT["F775W_MAG"],MASTER_COL_DICT["F850L_MAG"]]],
+                     "i775": [[MASTER_COL_DICT["F606W_MAG"],MASTER_COL_DICT["F850L_MAG"]],
+                              [MASTER_COL_DICT["F775W_MAG"],MASTER_COL_DICT["F850L_MAG"]]]}
+
+CANDELS_COLOR_COLOR_OPS = {"b435": [[MASTER_CANDELS_DICT["F435W_FLUX"],MASTER_CANDELS_DICT["F606W_FLUX"]],
+                                   [MASTER_CANDELS_DICT["F606W_FLUX"],MASTER_CANDELS_DICT["F850L_FLUX"]]],
+                           "v606": [[MASTER_CANDELS_DICT["F606W_FLUX"],MASTER_CANDELS_DICT["F775W_FLUX"]],
+                                   [MASTER_CANDELS_DICT["F775W_FLUX"],MASTER_CANDELS_DICT["F850L_FLUX"]]],
+                           "i775": [[MASTER_CANDELS_DICT["F606W_FLUX"],MASTER_CANDELS_DICT["F850L_FLUX"]],
+                                   [MASTER_CANDELS_DICT["F775W_FLUX"],MASTER_CANDELS_DICT["F850L_FLUX"]]]}
+
 COLOR_RULES = {"b435": ["V-Z","B-V",1.6,1.1,[-1,4],[-1,6],1.10,1.00,'yes'],
                "v606": ["I-Z","V-I",1.3,1.2,[-2,5],[-1,6],1.47,0.89,'yes'],
                "i775": ["V-Z","I-Z",1.2,1.3,[-1,4],[-1,6],1.20,1.30,'yes']}
@@ -82,7 +90,76 @@ header = '''#   1 NUMBER                 Running object number                  
 #  27 F850LP_MAGERR_AUTO     RMS error for AUTO magnitude                               [mag]
 '''
 
-
-def renameMCD():
-    M
-    return MASTER_COL_DICT
+candels_header = '''# 1  ID (F160W SExtractor ID)
+# 2  IAU_Name
+# 3  RA (F160W coordinate, J2000, degree)
+# 4  DEC (F160W coordinate, J2000, degree)
+# 5  F160W_LIMITING_MAGNITUDE (AB)
+# 6  FLAGS
+# 7  CLASS_STAR (F160W SExtractor S/G classifier output)
+# 8  CTIO_U_FLUX (uJy)
+# 9  CTIO_U_FLUXERR (uJy)
+# 10 CTIO_U_WEIGHT
+# 11 VIMOS_U_FLUX (uJy)
+# 12 VIMOS_U_FLUXERR (uJy)
+# 13 VIMOS_U_WEIGHT
+# 14 ACS_F435W_FLUX (uJy)
+# 15 ACS_F435W_FLUXERR (uJy)
+# 16 ACS_F435W_WEIGHT
+# 17 ACS_F606W_FLUX (uJy)
+# 18 ACS_F606W_FLUXERR (uJy)
+# 19 ACS_F606W_WEIGHT
+# 20 ACS_F775W_FLUX (uJy)
+# 21 ACS_F775W_FLUXERR (uJy)
+# 22 ACS_F775W_WEIGHT
+# 23 ACS_F814W_FLUX (uJy)
+# 24 ACS_F814W_FLUXERR (uJy)
+# 25 ACS_F814W_WEIGHT
+# 26 ACS_F850LP_FLUX (uJy)
+# 27 ACS_F850LP_FLUXERR (uJy)
+# 28 ACS_F850LP_WEIGHT
+# 29 WFC3_F098M_FLUX (uJy)
+# 30 WFC3_F098M_FLUXERR (uJy)
+# 31 WFC3_F098M_WEIGHT
+# 32 WFC3_F105W_FLUX (uJy)
+# 33 WFC3_F105W_FLUXERR (uJy)
+# 34 WFC3_F105W_WEIGHT
+# 35 WFC3_F125W_FLUX (uJy)
+# 36 WFC3_F125W_FLUXERR (uJy)
+# 37 WFC3_F125W_WEIGHT
+# 38 WFC3_F160W_FLUX (uJy)
+# 39 WFC3_F160W_FLUXERR (uJy)
+# 40 WFC3_F160W_WEIGHT
+# 41 ISAAC_KS_FLUX (uJy)
+# 42 ISAAC_KS_FLUXERR (uJy)
+# 43 ISAAC_KS_WEIGHT
+# 44 HAWKI_KS_FLUX (uJy)
+# 45 HAWKI_KS_FLUXERR (uJy)
+# 46 HAWKI_KS_WEIGHT
+# 47 IRAC_CH1_FLUX (uJy)
+# 48 IRAC_CH1_FLUXERR (uJy)
+# 49 IRAC_CH1_WEIGHT
+# 50 IRAC_CH2_FLUX (uJy)
+# 51 IRAC_CH2_FLUXERR (uJy)
+# 52 IRAC_CH2_WEIGHT
+# 53 IRAC_CH3_FLUX (uJy)
+# 54 IRAC_CH3_FLUXERR (uJy)
+# 55 IRAC_CH3_WEIGHT
+# 56 IRAC_CH4_FLUX (uJy)
+# 57 IRAC_CH4_FLUXERR (uJy)
+# 58 IRAC_CH4_WEIGHT
+# 59 FLUX_ISO (SExtractor F160W FLUX_ISO, uJy)
+# 60 FLUXERR_ISO (SExtractor F160W FLUXERR_ISO, uJy)
+# 61 FLUX_AUTO (SExtractor F160W FLUX_AUTO, uJy)
+# 62 FLUXERR_AUTO (SExtractor F160W FLUXERR_AUTO, uJy)
+# 63 FWHM_IMAGE (FWHM of F160W, pixel, 1 pixel=0.06 arcsec)
+# 64 A_IMAGE (F160W SExtractor Profile RMS along major axis, pixel)
+# 65 B_IMAGE (F160W SExtractor Profile RMS along minor axis, pixel)
+# 66 KRON_RADIUS (F160W SExtractor Kron aperture in units of A or B)
+# 67 FLUX_RADIUS_1 (F160W SExtractor 20% of light radius, pixel)
+# 68 FLUX_RADIUS_2 (F160W SExtractor 50% of light radius, pixel)
+# 69 FLUX_RADIUS_3 (F160W SExtractor 80% of light radius, pixel)
+# 70 THETA_IMAGE (F160W SExtractor Position angle (CCW/x), degree)
+# 71 APCORR (F160W FLUX_AUTO/FLUX_ISO, applied to ACS and WFC3 bands)
+# 72 HOT_FLAG (Source enters the catalog as a hot detection (=1) or a cold detection (=0))
+# 73 ISOAREAF_IMAGE (SExtractor F160W Isophotal Area)'''
