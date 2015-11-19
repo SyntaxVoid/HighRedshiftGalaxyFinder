@@ -36,7 +36,8 @@ if __name__ == '__main__':
     ERRORS         = 0  # Plot the errors in magnitude vs a private Candels catalog
     SELECT         = 0  # Runs through our master catalog and applies selection criteria
     COLOR_COLOR    = 0  # Makes color-color plots. SELECT must be True
-    COLOR_COMPARE  = 0
+    COLOR_COMPARE  = 0  # Compares My Colors with Candels Colors vs. H-Band magnitude
+    RED_SHIFT      = 0  # Plots a redshift histogram of my objects using Candels redshift values
 
     if EXPOSURE:
         RMSCompile.run()
@@ -58,7 +59,10 @@ if __name__ == '__main__':
         ColorColor.run("Candels {0} Selections ({1})","SelectedObjects/Candels/NONE/","candels",False)
         show()
     if COLOR_COMPARE:
-        #My Color - Candels Color (Two plots, V-I and I-Z) as a function of my h160w magnitude
+        ColorCompare.run("TestCatalogs/MatchedNONE.cat","Color-Color Comparison \n(Without RMS Maps)")
+        ColorCompare.run("TestCatalogs/MatchedRMS.cat","Color-Color Comparison \n(With RMS Maps)")
+        show()
+    if REDSHIFT:
 
         pass
     #
@@ -104,47 +108,6 @@ if __name__ == '__main__':
     #         show()
     #
     #
-    # if MY_COLORS_VS_C:
-    #     [my_v,my_i,my_z] = libs.jastro.param_get('TestCatalogs/MasterVsCandels.cat',[18,22,26],2)
-    #     [fc_v, fc_i, fc_z ] = libs.jastro.param_get('TestCatalogs/MasterVsCandels.cat',
-    #                                              [27+17,27+20,27+26],2)
-    #     [c_v, c_i, c_z ] = [libs.jastro.flux_list2mag(xx) for xx in [fc_v, fc_i, fc_z ]]
-    #
-    #     my_h = libs.jastro.param_get('TestCatalogs/MasterVsCandels.cat',[10],2)[0]
-    #
-    #     x_del_vi = libs.jtools.list_operate(libs.jtools.list_operate(my_v,my_i,'-'),libs.jtools.list_operate(c_v,c_i,'-'),'-')
-    #     x_del_iz = libs.jtools.list_operate(libs.jtools.list_operate(my_i,my_z,'-'),libs.jtools.list_operate(c_i,c_z,'-'),'-')
-    #
-    #     #Filter everything larger than 20
-    #     del_vi = [ ]
-    #     del_iz = [ ]
-    #     my_h_vi= [ ]
-    #     my_h_iz= [ ]
-    #     for n,a in enumerate(x_del_vi):
-    #         if abs(a) <= 20 and my_h[n] < 95:
-    #             del_vi.append(a)
-    #             my_h_vi.append(my_h[n])
-    #     for n,a in enumerate(x_del_iz):
-    #         if abs(a) <= 20 and my_h[n] < 95:
-    #             del_iz.append(a)
-    #             my_h_iz.append(my_h[n])
-    #
-    #     matplotlib.pyplot.figure()
-    #     matplotlib.pyplot.plot(my_h_vi,del_vi,'r.')
-    #     matplotlib.pyplot.ylabel('My Colors - Candels Colors (V-I)')
-    #     matplotlib.pyplot.xlabel('H160 magnitude')
-    #     matplotlib.pyplot.title('Difference in Colors \nMy(V-I)-Candels(V-I) vs H160 Magnitude')
-    #     matplotlib.pyplot.grid(True)
-    #
-    #     matplotlib.pyplot.figure()
-    #     matplotlib.pyplot.plot(my_h_iz,del_iz,'r.')
-    #     matplotlib.pyplot.ylabel('My Colors - Candels Colors (I-Z)')
-    #     matplotlib.pyplot.xlabel('H160 magnitude')
-    #     matplotlib.pyplot.title('Difference in Colors \nMy(I-Z)-Candels(I-Z) vs H160 Magnitude')
-    #     matplotlib.pyplot.grid(True)
-    #
-    #     matplotlib.pyplot.show()
-
 
     t2 = time.time()
     print("\n##Total time elapsed in main.py: {:.2f} seconds".format(t2-t1))

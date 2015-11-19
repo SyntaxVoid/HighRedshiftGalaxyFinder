@@ -42,3 +42,21 @@
        Did not include RMS maps.
    4d. My (I-Z) color minus Candels (I-Z) color plotted against H-band mag.
        Did include RMS maps.
+
+5. We plotted the redshift distribution of the objects selected from our
+   selection criteria using the catalogs generated without RMS maps.
+   5a. B435 drops, expected to spike at around z~(3,4)
+   5b. V606 drops, expected to spike at around z~(4,5)
+   5c. I775 drops, expected to spike at around z~(5,6)
+
+6. Same as (5), except we used the catalogs generated with RMS maps.
+   6a. B435 drops, expected to spike at around z~(3,4)
+   6b. V606 drops, expected to spike at around z~(4,5)
+   6c. I775 drops, expected to spike at around z~(5,6)
+
+7. We took the objects selected from the Candels catalog and matched
+   those objects with the Candels photz catalog and then plotted the
+   redshift distribution.
+   7a. B435 drops, expected to spike at around z~(3,4)
+   7b. V606 drops, expected to spike at around z~(4,5)
+   7c. I775 drops, expected to spike at around z~(5,6)

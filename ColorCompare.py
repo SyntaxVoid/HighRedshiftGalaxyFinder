@@ -23,7 +23,7 @@ def _plot(*args,**kwargs):
 def run(matched_catalog,title):
     with open(matched_catalog) as cat_data:
         cat_lines = cat_data.readlines()
-        x_ax = [ ] # H-Band magnitudes
+        x_ax =  [ ]  # H-Band magnitudes
         y_ax1 = [ ] # Color differences (V-I)
         y_ax2 = [ ] # Color differences (I-Z)
         for obj in cat_lines:
