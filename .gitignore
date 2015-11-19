@@ -5,6 +5,7 @@ __init__.py
 HalfMaps
 Candels
 TestCatalogs
+SubtractedMaps
 *.pyc
 *~
 .idea
