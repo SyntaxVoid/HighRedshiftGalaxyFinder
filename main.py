@@ -18,12 +18,13 @@ import RunSelections
 import ColorColor
 import ColorCompare
 import RedShift
+import CandelsVKetron
+import SubtractMaps
 
 from GLOBALS import *
 
 '''
-then subtract candels from our fits image
-plot candels (i) from THEIR cat vs candels (i) from MY cat
+Run
 '''
 
 if __name__ == '__main__':
@@ -36,8 +37,8 @@ if __name__ == '__main__':
     COLOR_COLOR      = 0  # Makes color-color plots. SELECT must be True
     COLOR_COMPARE    = 0  # Compares My Colors with Candels Colors vs. H-Band magnitude
     RED_SHIFT        = 0  # Plots a redshift histogram of my objects using Candels redshift values
-    CANDELS_V_KETRON = 0
-    SUBTRACT_MAPS    = 0
+    CANDELS_V_KETRON = 1
+    SUBTRACT_MAPS    = 1
     if EXPOSURE:
         RMSCompile.run()
     if FITS:
@@ -61,7 +62,7 @@ if __name__ == '__main__':
         ColorCompare.run("TestCatalogs/MatchedNONE.cat","Color-Color Comparison \n(Without RMS Maps)")
         ColorCompare.run("TestCatalogs/MatchedRMS.cat","Color-Color Comparison \n(With RMS Maps)")
         show()
-    if REDSHIFT:
+    if RED_SHIFT:
         RedShift.run("B435-Drops\n(Without RMS Maps)","TestCatalogs/MatchedNONE_b435_Z.cat",36)
         RedShift.run("V606-Drops\n(Without RMS Maps)","TestCatalogs/MatchedNONE_v606_Z.cat",36)
         RedShift.run("I775-Drops\n(Without RMS Maps)","TestCatalogs/MatchedNONE_i775_Z.cat",36)
@@ -76,7 +77,11 @@ if __name__ == '__main__':
         RedShift.run("V606-Drops\n(Using Candels Catalogs)","TestCatalogs/MatchedCandels_v606.cat",82)
         RedShift.run("I775-Drops\n(Using Candels Catalogs)","TestCatalogs/MatchedCandels_i775.cat",82)
         show()
-
-
+    if CANDELS_V_KETRON:
+        CandelsVKetron.run("Matches/NONE/Matched_f775w.cat","Flux Comparisons\n(No RMS Map)")
+        CandelsVKetron.run("Matches/RMS/Matched_f775w.cat","Flux Comparisons\n(RMS Map)")
+        show()
+    if SUBTRACT_MAPS:
+        SubtractMaps.run()
     t2 = time.time()
     print("\n##Total time elapsed in main.py: {:.2f} seconds".format(t2-t1))

@@ -6,6 +6,7 @@ HalfMaps
 Candels
 TestCatalogs
 SubtractedMaps
+CandelsRescaled
 *.pyc
 *~
 .idea

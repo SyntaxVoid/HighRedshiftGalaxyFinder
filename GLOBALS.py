@@ -60,6 +60,16 @@ ZP_f775w = 23.9
 ZP_f850l = 23.9
 
 
+MY_MAPS = ["FullMaps/gs_f125w_cropcal.fits","FullMaps/gs_f160w_cropcal.fits","FullMaps/gs_f606w_cropcal.fits",
+           "FullMaps/gs_f775w_cropcal.fits","FullMaps/gs_f850l_cropcal.fits"]
+CANDELS_MAPS = ["CandelsRescaled/gs_all_candels_ers_udf_f125w_060mas_v0.5_drz.fits",
+                "CandelsRescaled/gs_all_candels_ers_udf_f160w_060mas_v0.5_drz.fits",
+                "CandelsRescaled/gs_presm4_all_acs_f606w_60mas_v3.0_drz.fits",
+                "CandelsRescaled/gs_presm4_all_acs_f775w_60mas_v3.0_drz.fits",
+                "CandelsRescaled/gs_presm4_all_acs_f850l_60mas_v3.0_drz.fits"]
+SUB_DEST = ["SubtractedMaps/f125w_sub.fits","SubtractedMaps/f160w_sub.fits","SubtractedMaps/f606w_sub.fits",
+            "SubtractedMaps/f775w_sub.fits","SubtractedMaps/f850l_sub.fits"]
+
 # Header to add to the catalogs that I generate
 header = '''#   1 NUMBER                 Running object number                                      [count]
 #   2 ALPHA_J2000            Right ascension of barycenter (J2000)                      [deg]
